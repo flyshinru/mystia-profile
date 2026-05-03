@@ -2936,8 +2936,6 @@ body.fixed-story .scene.is-active {
     transition-duration: .01ms !important;
   }
 
-  .panic-copy,
-  .panic-copy::before,
   .laugh-cards span,
   .laugh-cards span::after,
   .taunt-cards > span,
@@ -2948,16 +2946,25 @@ body.fixed-story .scene.is-active {
   .devour-copy::before,
   .taunt-copy,
   .taunt-copy::before {
-    animation-duration: 30s !important;
+    animation-duration: 15s !important;
     animation-iteration-count: infinite !important;
   }
 
-  .panic-copy::before,
   .laugh-cards span::after,
   .taunt-cards > span::after,
   .whisper::before,
   .devour-copy::before,
   .taunt-copy::before {
+    animation-duration: 10s !important;
+  }
+
+  .panic-copy,
+  .panic-copy::before {
+    animation-duration: 30s !important;
+    animation-iteration-count: infinite !important;
+  }
+
+  .panic-copy::before {
     animation-duration: 15s !important;
   }
 }
