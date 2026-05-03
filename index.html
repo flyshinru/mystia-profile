@@ -1,0 +1,307 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Mystic Night Sparrow - Scroll Prototype</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body class="fixed-story">
+  <div class="progress" aria-hidden="true"></div>
+  <div class="world" aria-hidden="true">
+    <div class="world-image"></div>
+    <div class="world-sky"></div>
+    <div class="world-night"></div>
+    <div class="world-bamboo bamboo-far"></div>
+    <div class="world-bamboo bamboo-near"></div>
+    <div class="world-path"></div>
+    <div class="branch branch-a">
+      <span class="sparrow sparrow-a"></span>
+      <span class="sparrow sparrow-b"></span>
+    </div>
+    <div class="branch branch-b">
+      <span class="sparrow sparrow-c"></span>
+    </div>
+    <div class="branch branch-c">
+      <span class="sparrow sparrow-d"></span>
+      <span class="sparrow sparrow-e"></span>
+    </div>
+  </div>
+
+  <div class="persistent-gaze" aria-hidden="true">
+    <span></span><span></span><span></span><span></span><span></span><span></span>
+    <span></span><span></span><span></span><span></span><span></span><span></span>
+    <span></span><span></span><span></span><span></span><span></span><span></span>
+  </div>
+  <div class="persistent-dark" aria-hidden="true"></div>
+
+  <header class="site-header">
+    <a class="brand" href="#top" aria-label="page top">
+      <span>夜雀</span>
+      <strong>Mystic Night Sparrow</strong>
+    </a>
+    <nav aria-label="sections">
+      <a href="#day">Day</a>
+      <a href="#vanish">Vanish</a>
+      <a href="#night">Night</a>
+      <a href="#cart">Cart</a>
+      <a href="#profile">Profile</a>
+    </nav>
+  </header>
+
+  <main id="top">
+    <section class="scene scene-day" data-scene="day">
+      <div class="sky glow"></div>
+      <div class="cloud cloud-a"></div>
+      <div class="cloud cloud-b"></div>
+      <div class="gate-light"></div>
+      <div class="entrance-bamboo entrance-left"></div>
+      <div class="entrance-bamboo entrance-right"></div>
+      <div class="forest back"></div>
+      <div class="forest mid"></div>
+      <div class="grass"></div>
+      <div class="lure-bird bird-a" aria-hidden="true"></div>
+      <div class="lure-bird bird-b" aria-hidden="true"></div>
+      <div class="copy hero-copy">
+        <p class="eyebrow">night sparrow tale</p>
+        <h1>죽림을 지나가다<br>귀여운 참새를 발견했다.</h1>
+        <p>처음에는 그냥 작은 새 한 마리였다. 풀잎은 반짝이고, 얇은 날갯짓은 미스티아의 밤으로 이어졌다.</p>
+      </div>
+      <div class="scroll-cue">scroll</div>
+    </section>
+
+    <section class="scene scene-lure" data-scene="lure">
+      <div class="lure-glow" aria-hidden="true"></div>
+      <div class="lure-bird lure-guide" aria-hidden="true"></div>
+      <div class="lure-feathers" aria-hidden="true">
+        <span></span><span></span><span></span>
+      </div>
+      <div class="copy lure-copy">
+        <h2>참새는 나를 유혹하듯<br>죽림 속으로 들어갔다.</h2>
+        <p>날개가 한 번 흔들릴 때마다, 숲 안쪽의 빛도 같이 흔들렸다. 따라오라는 듯한 노랫소리가 작게 섞였다.</p>
+      </div>
+    </section>
+
+    <section class="scene scene-trail" data-scene="trail">
+      <div class="trail-depth" aria-hidden="true">
+        <div class="path-lines"></div>
+        <div class="wall wall-left"></div>
+        <div class="wall wall-right"></div>
+        <div class="center-light"></div>
+      </div>
+      <div class="bamboo layer-one"></div>
+      <div class="bamboo layer-two"></div>
+      <div class="speed-lines" aria-hidden="true"></div>
+      <div class="leaf leaf-a"></div>
+      <div class="leaf leaf-b"></div>
+      <div class="lure-bird runner" aria-hidden="true"></div>
+      <div class="story-notes notes-one" aria-hidden="true">
+        <span>♪</span><span>♩</span>
+      </div>
+      <div class="gaze-field gaze-one" aria-hidden="true"><span></span></div>
+      <div class="copy narrow">
+        <h2>참새는 점점 더<br>숲 속 깊은 곳으로 날아갔다.</h2>
+        <p>길은 비슷비슷했고, 낮의 색은 조금씩 빠져나갔다. 돌아가려 해도 같은 대나무가 다시 나타났다.</p>
+      </div>
+    </section>
+
+    <section class="scene scene-vanish" data-scene="vanish">
+      <div class="bird-shadow" aria-hidden="true"></div>
+      <div class="empty-trail" aria-hidden="true">
+        <span></span><span></span><span></span>
+      </div>
+      <div class="story-notes notes-two" aria-hidden="true">
+        <span>♪</span><span>♬</span><span>♩</span><span>♪</span>
+      </div>
+      <div class="gaze-field gaze-two" aria-hidden="true"><span></span><span></span></div>
+      <div class="copy vanish-copy">
+        <h2>어디갔지?</h2>
+        <p>방금 전까지 보이던 작은 날개가 대나무 사이로 사라졌다. 깃털 하나만 남고, 숲은 아무 대답도 하지 않았다.</p>
+      </div>
+    </section>
+
+    <section class="scene scene-unease" data-scene="unease">
+      <div class="loop-mark loop-a" aria-hidden="true"></div>
+      <div class="loop-mark loop-b" aria-hidden="true"></div>
+      <div class="loop-mark loop-c" aria-hidden="true"></div>
+      <div class="same-bamboo" aria-hidden="true">
+        <span></span><span></span><span></span>
+      </div>
+      <div class="story-notes notes-three" aria-hidden="true">
+        <span>♪</span><span>♬</span><span>♪</span><span>♩</span><span>♬</span><span>♪</span>
+      </div>
+      <div class="gaze-field gaze-four" aria-hidden="true"><span></span><span></span><span></span><span></span></div>
+      <div class="copy unease-copy">
+        <h2>어라?<br>여기 아까 왔던길 같은데.</h2>
+        <p>같은 잎사귀, 같은 그림자, 같은 휘어진 대나무. 숲은 조금씩 친절함을 잃어가고 있었다.</p>
+      </div>
+    </section>
+
+    <section class="scene scene-lost" data-scene="lost">
+      <div class="fog"></div>
+      <div class="bamboo dark-one"></div>
+      <div class="bamboo dark-two"></div>
+      <div class="vignette"></div>
+      <div class="copy center">
+        <h2>시야가 점점<br>좁아지는 것 같다.</h2>
+        <p>가까운 곳만 보이고, 먼 곳은 검은 물감처럼 번진다. 밤참새의 노래가 길의 윤곽을 지워버린다.</p>
+      </div>
+      <div class="story-notes notes-four" aria-hidden="true">
+        <span>♪</span><span>♬</span><span>♪</span><span>♩</span><span>♬</span><span>♪</span><span>♩</span><span>♪</span>
+      </div>
+      <div class="gaze-field gaze-seven" aria-hidden="true"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></div>
+    </section>
+
+    <section class="scene scene-song" data-scene="song">
+      <div class="song-ripple" aria-hidden="true"></div>
+      <div class="story-notes notes-five song-notes" aria-hidden="true">
+        <span>♪</span><span>♬</span><span>♪</span><span>♩</span><span>♬</span><span>♪</span><span>♩</span><span>♪</span><span>♬</span><span>♩</span>
+      </div>
+      <div class="gaze-field gaze-eleven" aria-hidden="true"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></div>
+      <div class="copy song-copy">
+        <h2>그러고보니 이 노랫소리는 뭐지?</h2>
+        <p>분명 멀리서 들리는 노래인데, 귓가 바로 옆에서 속삭이는 것처럼 선명했다.</p>
+      </div>
+    </section>
+
+    <section class="scene scene-silence" data-scene="silence">
+      <div class="silence-ring" aria-hidden="true"></div>
+      <div class="gaze-field gaze-eleven gaze-crowded gaze-silent" aria-hidden="true"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></div>
+      <div class="copy silence-copy">
+        <h2>눈치챈듯<br>노랫소리가 끊어졌다.</h2>
+        <p>바람도, 잎사귀도, 발소리도 멈춘 것 같았다. 조용해진 숲은 오히려 더 시끄러웠다.</p>
+      </div>
+    </section>
+
+    <section class="scene scene-watched" data-scene="watched">
+      <div class="gaze-field gaze-eleven gaze-crowded gaze-watched" aria-hidden="true"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></div>
+      <div class="watch-branch branch-one" aria-hidden="true"></div>
+      <div class="watch-branch branch-two" aria-hidden="true"></div>
+      <div class="copy watched-copy">
+        <h2>수많은 시선이<br>날 보고 있는 것 같다.</h2>
+        <p>돌아보면 아무것도 없었다. 허나 돌아보니, 보이지 않는 시선들이 날 기다리고 있었다.</p>
+      </div>
+    </section>
+
+    <section class="scene scene-panic" data-scene="panic">
+      <div class="panic-noise"></div>
+      <div class="panic-branches" aria-hidden="true">
+        <span></span><span></span><span></span>
+      </div>
+      <div class="gaze-field gaze-eleven gaze-crowded gaze-panic" aria-hidden="true"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></div>
+      <div class="copy panic-copy">
+        <h2>집에 가고 싶어.</h2>
+        <p>나는 도대체 어딜 오고만걸까. 발소리는 하나인데, 뒤에서 누가 따라오는 것만 같다.</p>
+      </div>
+    </section>
+
+    <section class="scene scene-night" data-scene="night">
+      <div class="moon"></div>
+      <div class="gaze-field gaze-eleven gaze-crowded gaze-night" aria-hidden="true"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></div>
+      <div class="copy whisper">
+        <h2>내 노래,<br>어땠어?</h2>
+        <p>갑자기 들려오는 목소리. 발걸음을 멈추고 숨을 죽인 채, 가만히 서 있을 수밖에 없었다.</p>
+      </div>
+    </section>
+
+    <section class="scene scene-taunt" data-scene="taunt">
+      <div class="gaze-field gaze-eleven gaze-crowded gaze-taunt" aria-hidden="true"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></div>
+      <div class="laugh-cards" aria-hidden="true">
+        <span>키키킥...</span>
+        <span>들리지?</span>
+        <span>들리잖아?</span>
+        <span>대답해...</span>
+      </div>
+      <div class="copy devour-copy">
+        <h2>도망쳐봤자<br>소용없어.</h2>
+        <p>그 목소리는 장난처럼 들리지 않았다. 대나무들은 마치 새장처럼 좁혀 들어왔다.</p>
+      </div>
+    </section>
+
+    <section class="scene scene-devour" data-scene="devour">
+      <div class="taunt-eye devour-eye" aria-hidden="true"></div>
+      <div class="devour-mouth" aria-hidden="true"></div>
+      <div class="devour-shadow" aria-hidden="true"></div>
+      <div class="gaze-field gaze-eleven gaze-crowded gaze-devour" aria-hidden="true"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></div>
+      <div class="taunt-cards" aria-hidden="true">
+        <span>길을 잃었구나?</span>
+        <span>집에 갈 수 있을거 같지?</span>
+        <span>이대로 잡아먹을까</span>
+      </div>
+      <div class="copy taunt-copy">
+        <h2>그렇게 약한 몸으로<br>어디까지 갈 수 있을 것 같아?</h2>
+        <p>가까워지는 목소리, 가까워지는 시선. 금방이라도 어둠이 입을 벌릴 것 같았다.</p>
+      </div>
+    </section>
+
+    <section class="scene scene-breath" data-scene="breath">
+      <div class="breath-pulse" aria-hidden="true"></div>
+      <div class="copy breath-copy">
+        <h2>...</h2>
+      </div>
+    </section>
+
+    <section class="scene scene-scare" data-scene="scare">
+      <div class="flash"></div>
+      <img class="mistia-art scare-mistia-art" src="assets/mistia-night-sparrow.png" alt="" aria-hidden="true">
+      <div class="copy scare-copy">
+        <h2>와!</h2>
+      </div>
+    </section>
+
+    <section class="scene scene-faint" data-scene="faint">
+      <img class="mistia-art faint-mistia-art" src="assets/mistia-night-sparrow.png" alt="" aria-hidden="true">
+      <div class="eyelid eyelid-top" aria-hidden="true"></div>
+      <div class="eyelid eyelid-bottom" aria-hidden="true"></div>
+      <div class="faint-noise" aria-hidden="true"></div>
+    </section>
+
+    <section class="scene scene-cart" data-scene="cart" data-duration="1.8">
+      <div class="wake-lid wake-lid-top" aria-hidden="true"></div>
+      <div class="wake-lid wake-lid-bottom" aria-hidden="true"></div>
+      <div class="lantern lantern-a"></div>
+      <div class="lantern lantern-b"></div>
+      <div class="food-cart">
+        <div class="roof"></div>
+        <div class="sign">夜雀屋台</div>
+        <div class="counter"></div>
+        <div class="steam steam-a"></div>
+        <div class="steam steam-b"></div>
+      </div>
+      <img class="mistia-art cart-mistia-art" src="assets/mistia-night-sparrow.png" alt="" aria-hidden="true">
+      <img class="mokou-bonk-art" src="assets/mokou-bonks-mystia.png" alt="" aria-hidden="true">
+      <div class="mokou" aria-hidden="true">
+        <span class="hair"></span>
+        <span class="sleeve"></span>
+      </div>
+      <div class="copy ending">
+        <h2>정신을 차려보니 포장마차 앞이었다.</h2>
+        <p>미스티아가 뿌듯하게 웃는 순간, 모코우가 조용히 다가와 콩. 오늘의 장난은 여기까지. 그래도 야식은 맛있었다.</p>
+      </div>
+    </section>
+
+    <section class="scene scene-profile" data-scene="profile">
+      <div class="profile-card-art" aria-hidden="true">
+        <img class="mistia-art profile-mistia-art" src="assets/mistia-night-sparrow.png" alt="">
+        <div class="profile-cart-light"></div>
+      </div>
+      <div class="copy profile-copy">
+        <p class="eyebrow">Mystia Lorelei</p>
+        <h2>미스티아 로렐라이</h2>
+        <p>밤참새 요괴. 노래로 사람의 시야를 흐리게 하고, 밤에는 포장마차를 연다.<br>으스스하지만 귀엽고, 따뜻한 불빛 쪽으로 데려오는 장난꾸러기.</p>
+        <a class="button" href="#top">다시 숲 입구로</a>
+      </div>
+    </section>
+
+    <div class="scroll-track" aria-hidden="true">
+      <span id="trail"></span>
+      <span id="lost"></span>
+      <span id="night"></span>
+      <span id="cart"></span>
+      <span id="profile"></span>
+    </div>
+  </main>
+
+  <script src="script.js"></script>
+</body>
+</html>
