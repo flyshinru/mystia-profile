@@ -107,7 +107,8 @@ let preloadComplete = false;
 let preloadStarted = false;
 let preloadPromise = null;
 let loadingFinishFrame = null;
-const initialAutoplayEnabled = false;
+let initialAutoplayEnabled = false;
+const warningAutoplayToggle = document.querySelector(".warning-autoplay-toggle");
 
 root.style.setProperty("--scene-count", (maxStoryProgress + 1).toFixed(2));
 
@@ -227,6 +228,9 @@ function waitForPageLoad() {
 
 function hideContentWarning() {
   if (!contentWarning) return;
+
+  initialAutoplayEnabled = warningAutoplayToggle?.checked === true;
+
   contentWarning.classList.add("is-hidden");
   removeBodyLock("warning");
 

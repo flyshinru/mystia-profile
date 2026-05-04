@@ -3523,3 +3523,21 @@ body.fixed-story .scene.is-active {
     filter: blur(.02px) contrast(1.03);
   }
 }
+
+.warning-autoplay-option {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: 22px;
+  color: rgba(235, 255, 255, .82);
+  font: 700 13px/1.5 "Noto Sans KR", Arial, sans-serif;
+  cursor: pointer;
+  user-select: none;
+}
+
+.warning-autoplay-option input {
+  width: 16px;
+  height: 16px;
+  accent-color: #b12b5c;
+  cursor: pointer;
+}
