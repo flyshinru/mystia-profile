@@ -21,10 +21,10 @@ const autoplayStorage = sessionStorage;
 const minimumLoadingGateDuration = 2000;
 const loadingRealProgressLimit = 0.9;
 const preloadAssets = [
-  "assets/bamboo-forest-world.png",
-  "assets/mystia-night-sparrow.png",
-  "assets/mystia-yatai-ending.png",
-  "assets/mokou-bonks-mystia.png"
+  "assets/bamboo-forest-world.webp",
+  "assets/mystia-night-sparrow.webp",
+  "assets/mystia-yatai-ending.webp",
+  "assets/mokou-bonks-mystia.webp"
 ];
 const durationScale = 1.72;
 const autoplayDuration = 180000;

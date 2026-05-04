@@ -166,7 +166,7 @@ body.autoplay-lock .scroll-cue {
 }
 
 .world-image {
-  background-image: url("assets/bamboo-forest-world.png");
+  background-image: url("assets/bamboo-forest-world.webp");
   background-size: cover;
   background-position: center center;
   filter:
@@ -2923,7 +2923,7 @@ body.fixed-story .scene.is-active {
   place-items: center;
   background:
     linear-gradient(180deg, rgba(0, 0, 0, .14), rgba(0, 0, 0, .28)),
-    url("assets/mystia-yatai-ending.png") center center / cover no-repeat,
+    url("assets/mystia-yatai-ending.webp") center center / cover no-repeat,
     #100c10;
   color: #fff8e9;
 }
@@ -3307,7 +3307,7 @@ body.fixed-story .scene.is-active {
   background:
     radial-gradient(circle at 26% 52%, rgba(255, 172, 92, .18), transparent 28%),
     linear-gradient(180deg, rgba(0, 0, 0, .18), rgba(0, 0, 0, .54)),
-    url("assets/mystia-yatai-ending.png") center center / cover no-repeat,
+    url("assets/mystia-yatai-ending.webp") center center / cover no-repeat,
     #100c10;
   color: #fff8e9;
 }
@@ -3464,13 +3464,6 @@ body.fixed-story .scene.is-active {
   }
 }
 
-@keyframes soundRipple {
-  50% {
-    transform: scale(calc(.94 + var(--scene-progress) * .22));
-    opacity: calc(.28 + var(--scene-progress) * .42);
-  }
-}
-
 @keyframes silencePress {
   50% {
     transform: scale(1.03);
@@ -3478,33 +3471,10 @@ body.fixed-story .scene.is-active {
   }
 }
 
-@keyframes moonFlicker {
-  50% {
-    opacity: .64;
-    box-shadow:
-      0 0 90px rgba(104, 215, 237, .22),
-      0 0 180px rgba(104, 215, 237, .08);
-  }
-}
-
-@keyframes dreadStrobe {
-  50% {
-    opacity: calc(.18 + var(--scene-progress) * .42);
-    transform: translate3d(4px, -3px, 0);
-  }
-}
-
 @keyframes lanternWarmth {
   50% {
     opacity: calc(.55 + var(--scene-progress) * .32);
     filter: saturate(1.14);
-  }
-}
-
-@keyframes leftoverBlink {
-  50% {
-    opacity: .34;
-    filter: blur(1.4px);
   }
 }
 
@@ -3553,18 +3523,6 @@ body.fixed-story .scene.is-active {
   50% { transform: translateY(-26px) rotate(8deg); }
 }
 
-@keyframes hop {
-  50% {
-    margin-bottom: 18px;
-  }
-}
-
-@keyframes wingBeat {
-  50% {
-    translate: 0 -12px;
-  }
-}
-
 @keyframes sparrowWing {
   50% {
     translate: 0 -9px;
@@ -3581,20 +3539,6 @@ body.fixed-story .scene.is-active {
     opacity: .05;
     transform: scale(1.04);
   }
-}
-
-@keyframes panicNoise {
-  0% { transform: translate3d(-6px, 3px, 0); }
-  50% { transform: translate3d(8px, -5px, 0); }
-  100% { transform: translate3d(-3px, 5px, 0); }
-}
-
-@keyframes tremble {
-  0% { translate: -3px 2px; }
-  25% { translate: 3px -2px; }
-  50% { translate: -2px -1px; }
-  75% { translate: 2px 3px; }
-  100% { translate: -1px -2px; }
 }
 
 @keyframes panicCardShake {
@@ -3653,29 +3597,6 @@ body.fixed-story .scene.is-active {
   }
 }
 
-@keyframes hauntedTextWave {
-  0% {
-    transform: skewX(-.6deg) translateY(0) scaleY(1.004) scaleX(.998);
-    filter: blur(.02px) contrast(1.02);
-  }
-  25% {
-    transform: skewX(.9deg) translateY(-1px) scaleY(1.015) scaleX(1.004);
-    filter: blur(.12px) contrast(1.06);
-  }
-  50% {
-    transform: skewX(-1.2deg) translateY(1px) scaleY(.985) scaleX(1.01);
-    filter: blur(.24px) contrast(1.09);
-  }
-  75% {
-    transform: skewX(.7deg) translateY(-.5px) scaleY(1.012) scaleX(.996);
-    filter: blur(.1px) contrast(1.05);
-  }
-  100% {
-    transform: skewX(-.6deg) translateY(0) scaleY(1.004) scaleX(.998);
-    filter: blur(.02px) contrast(1.02);
-  }
-}
-
 @keyframes hauntedHeadlineWave {
   0% {
     transform: translate3d(-1px, .5px, 0) skewX(-.8deg) scaleX(1.004) scaleY(.994);
@@ -3719,39 +3640,6 @@ body.fixed-story .scene.is-active {
   100% {
     translate: -1px -1px;
     filter: blur(.1px);
-  }
-}
-
-@keyframes eerieText {
-  50% {
-    translate: 2px 0;
-    filter: blur(.4px);
-  }
-}
-
-@keyframes cardUnease {
-  0% { translate: -2px 1px; filter: blur(.15px) brightness(1); }
-  50% { translate: 3px -2px; filter: blur(.45px) brightness(1.2); }
-  100% { translate: -1px -1px; filter: blur(.2px) brightness(.95); }
-}
-
-@keyframes devourPulse {
-  50% {
-    filter: brightness(1.18) saturate(1.2);
-  }
-}
-
-@keyframes starePop {
-  50% {
-    scale: 1.08;
-    filter: drop-shadow(0 0 16px rgba(255, 126, 181, .6));
-  }
-}
-
-@keyframes laughShiver {
-  50% {
-    translate: -2px 1px;
-    filter: blur(.25px);
   }
 }
 
