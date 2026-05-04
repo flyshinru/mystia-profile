@@ -1054,17 +1054,6 @@ body.fixed-story .scene.is-active {
     scale(calc(.32 - var(--sparrow-motion) * .19));
 }
 
-.scroll-cue {
-  position: absolute;
-  right: clamp(20px, 5vw, 70px);
-  bottom: 34px;
-  z-index: 10;
-  font: 700 11px/1 Arial, sans-serif;
-  letter-spacing: .22em;
-  text-transform: uppercase;
-  writing-mode: vertical-rl;
-}
-
 /* Forest Path Scenes */
 
 .scene-lure {
@@ -3540,4 +3529,51 @@ body.fixed-story .scene.is-active {
   height: 16px;
   accent-color: #b12b5c;
   cursor: pointer;
+}
+
+.warning-scroll-hint {
+  margin: 8px 0 0;
+  color: rgba(235, 255, 255, .62);
+  font: 600 12px/1.6 "Noto Sans KR", Arial, sans-serif;
+}
+
+.scroll-cue {
+  position: fixed;
+  left: 50%;
+  bottom: 34px;
+  z-index: 80;
+  transform: translateX(-50%);
+  padding: 10px 18px 12px;
+
+  color: #eafff6;
+  font: 900 12px/1 Arial, sans-serif;
+  letter-spacing: .2em;
+  text-transform: uppercase;
+  text-align: center;
+
+  text-shadow:
+    0 2px 10px rgba(0, 0, 0, .9),
+    0 0 8px rgba(120, 255, 200, .35);
+
+  background: radial-gradient(ellipse at 50% 45%,
+    rgba(8, 32, 26, .62),
+    rgba(6, 24, 20, .36) 48%,
+    transparent 74%);
+
+  border-radius: 999px;
+  writing-mode: horizontal-tb;
+}
+
+.scroll-cue::after {
+  content: "↓";
+  display: block;
+  margin-top: 6px;
+
+  color: #eafff6;
+  font: 900 22px/1 Arial, sans-serif;
+  letter-spacing: 0;
+
+  text-shadow:
+    0 2px 10px rgba(0, 0, 0, .9),
+    0 0 10px rgba(120, 255, 200, .55);
 }
