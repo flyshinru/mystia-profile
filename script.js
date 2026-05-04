@@ -1,4 +1,4 @@
-const root = document.documentElement;
+﻿const root = document.documentElement;
 const scenes = [...document.querySelectorAll(".scene")];
 const navLinks = [...document.querySelectorAll('nav a[href^="#"]')];
 
@@ -16,14 +16,14 @@ const warningEnter = document.querySelector(".warning-enter");
 const loadingGate = document.querySelector(".loading-gate");
 const returnFade = document.querySelector(".return-fade");
 const returnButtons = [...document.querySelectorAll('.profile-copy .button[href="#top"]')];
-const autoplayStorageKey = "mistia-initial-autoplay-complete";
+const autoplayStorageKey = "mystia-initial-autoplay-complete";
 const autoplayStorage = sessionStorage;
 const minimumLoadingGateDuration = 2000;
 const loadingRealProgressLimit = 0.9;
 const preloadAssets = [
   "assets/bamboo-forest-world.png",
-  "assets/mistia-night-sparrow.png",
-  "assets/mistia-yatai-ending.png",
+  "assets/mystia-night-sparrow.png",
+  "assets/mystia-yatai-ending.png",
   "assets/mokou-bonks-mystia.png"
 ];
 const durationScale = 1.72;
@@ -798,3 +798,4 @@ update();
 syncControlledTarget();
 scrollToInitialHash();
 prepareAutoplayStart();
+

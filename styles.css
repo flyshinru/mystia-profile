@@ -1,4 +1,4 @@
-:root {
+﻿:root {
   --ink: #14202a;
   --muted: rgba(20, 32, 42, .68);
   --blue: #70d9ea;
@@ -2165,14 +2165,14 @@ body.fixed-story .scene.is-active {
   opacity: .48;
 }
 
-.mistia-art {
+.mystia-art {
   display: block;
   object-fit: cover;
   user-select: none;
   pointer-events: none;
 }
 
-.mistia-night-art {
+.mystia-night-art {
   position: absolute;
   left: 50%;
   bottom: -14%;
@@ -2814,7 +2814,7 @@ body.fixed-story .scene.is-active {
     #000;
 }
 
-.scare-mistia-art {
+.scare-mystia-art {
   position: absolute;
   left: 50%;
   bottom: -26%;
@@ -2870,7 +2870,7 @@ body.fixed-story .scene.is-active {
   opacity: calc(.24 - var(--scene-progress) * .22);
 }
 
-.faint-mistia-art {
+.faint-mystia-art {
   position: absolute;
   left: 50%;
   bottom: -24%;
@@ -2917,7 +2917,7 @@ body.fixed-story .scene.is-active {
   place-items: center;
   background:
     linear-gradient(180deg, rgba(0, 0, 0, .14), rgba(0, 0, 0, .28)),
-    url("assets/mistia-yatai-ending.png") center center / cover no-repeat,
+    url("assets/mystia-yatai-ending.png") center center / cover no-repeat,
     #100c10;
   color: #fff8e9;
 }
@@ -3147,7 +3147,7 @@ body.fixed-story .scene.is-active {
   transform: rotate(-18deg);
 }
 
-.cart-mistia-art {
+.cart-mystia-art {
   position: absolute;
   left: 28%;
   bottom: 18%;
@@ -3301,7 +3301,7 @@ body.fixed-story .scene.is-active {
   background:
     radial-gradient(circle at 26% 52%, rgba(255, 172, 92, .18), transparent 28%),
     linear-gradient(180deg, rgba(0, 0, 0, .18), rgba(0, 0, 0, .54)),
-    url("assets/mistia-yatai-ending.png") center center / cover no-repeat,
+    url("assets/mystia-yatai-ending.png") center center / cover no-repeat,
     #100c10;
   color: #fff8e9;
 }
@@ -3335,7 +3335,7 @@ body.fixed-story .scene.is-active {
   display: none;
 }
 
-.profile-mistia-art {
+.profile-mystia-art {
   position: absolute;
   inset: 0;
   z-index: 2;
@@ -3346,7 +3346,7 @@ body.fixed-story .scene.is-active {
   filter: saturate(1.05) contrast(1.03);
 }
 
-.profile-mistia {
+.profile-mystia {
   position: absolute;
   left: 50%;
   top: 0;
@@ -3355,7 +3355,7 @@ body.fixed-story .scene.is-active {
   transform: translateX(-50%);
 }
 
-.profile-mistia span {
+.profile-mystia span {
   position: absolute;
   display: block;
   background: #111018;
@@ -3832,7 +3832,7 @@ body.fixed-story .scene.is-active {
     bottom: 14%;
   }
 
-  .mistia-night-art {
+  .mystia-night-art {
     width: min(92vw, 520px);
     height: 74vh;
     bottom: -8%;
@@ -3844,7 +3844,7 @@ body.fixed-story .scene.is-active {
     height: 48vh;
   }
 
-  .scare-mistia-art {
+  .scare-mystia-art {
     width: min(120vw, 680px);
     height: 104vh;
     bottom: -18%;
@@ -3934,7 +3934,7 @@ body.fixed-story .scene.is-active {
     transform: scale(.72);
   }
 
-  .cart-mistia-art {
+  .cart-mystia-art {
     left: 30%;
     bottom: 20%;
     width: min(52vw, 260px);
@@ -4036,3 +4036,4 @@ body.fixed-story .scene.is-active {
     transition-duration: 900ms !important;
   }
 }
+
