@@ -116,14 +116,6 @@ body.autoplay-lock .scroll-cue {
   word-break: keep-all;
 }
 
-.warning-panel p:not(.warning-kicker) {
-  margin: 18px 0 0;
-  color: rgba(235, 255, 255, .78);
-  font-size: 16px;
-  line-height: 1.8;
-  word-break: keep-all;
-}
-
 .warning-pink {
   color: #b12b5c;
   font-weight: 700;
@@ -3513,28 +3505,11 @@ body.fixed-story .scene.is-active {
   }
 }
 
-.warning-autoplay-option {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  margin-top: 22px;
-  color: rgba(235, 255, 255, .82);
-  font: 700 13px/1.5 "Noto Sans KR", Arial, sans-serif;
-  cursor: pointer;
-  user-select: none;
-}
-
 .warning-autoplay-option input {
   width: 16px;
   height: 16px;
   accent-color: #b12b5c;
   cursor: pointer;
-}
-
-.warning-scroll-hint {
-  margin: 8px 0 0;
-  color: rgba(235, 255, 255, .62);
-  font: 600 12px/1.6 "Noto Sans KR", Arial, sans-serif;
 }
 
 .scroll-cue {
@@ -3576,4 +3551,46 @@ body.fixed-story .scene.is-active {
   text-shadow:
     0 2px 10px rgba(0, 0, 0, .9),
     0 0 10px rgba(120, 255, 200, .55);
+}
+
+/* ===== Warning Modal Refactor ===== */
+
+.warning-panel h2 {
+  font-size: clamp(34px, 5vw, 56px);
+  line-height: 1.12;
+}
+
+.warning-description {
+  margin-top: 22px;
+  color: rgba(235, 255, 255, .72);
+  font-size: 15px;
+  line-height: 1.8;
+}
+
+.warning-autoplay-option {
+  margin-top: 24px;
+  padding: 14px 16px;
+  display: flex;
+  gap: 12px;
+  align-items: flex-start;
+  border: 1px solid rgba(197, 248, 240, .18);
+  background: rgba(197, 248, 240, .06);
+  cursor: pointer;
+}
+
+.warning-autoplay-option input {
+  margin-top: 2px;
+  accent-color: #b12b5c;
+}
+
+.warning-autoplay-option span {
+  color: rgba(245, 255, 255, .9);
+  font: 800 14px/1.4 "Noto Sans KR", Arial, sans-serif;
+}
+
+.warning-autoplay-option small {
+  display: block;
+  margin-top: 4px;
+  color: rgba(235, 255, 255, .58);
+  font: 600 12px/1.5 "Noto Sans KR", Arial, sans-serif;
 }
