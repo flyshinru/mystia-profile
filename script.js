@@ -1,4 +1,5 @@
 ﻿const root = document.documentElement;
+// DOM references
 const scenes = [...document.querySelectorAll(".scene")];
 const navLinks = [...document.querySelectorAll('nav a[href^="#"]')];
 
@@ -16,6 +17,13 @@ const warningEnter = document.querySelector(".warning-enter");
 const loadingGate = document.querySelector(".loading-gate");
 const returnFade = document.querySelector(".return-fade");
 const returnButtons = [...document.querySelectorAll('.profile-copy .button[href="#top"]')];
+
+// Configuration
+const bodyLockClasses = {
+  warning: "warning-open",
+  loading: "loading-lock",
+  autoplay: "autoplay-lock"
+};
 const autoplayStorageKey = "mystia-initial-autoplay-complete";
 const autoplayStorage = sessionStorage;
 const minimumLoadingGateDuration = 2000;
@@ -28,7 +36,6 @@ const preloadAssets = [
 ];
 const durationScale = 1.72;
 const autoplayDuration = 180000;
-const sceneCount = scenes.length;
 const textRevealDelays = new Map([
   ["day", 0.03],
   ["cart", 1.32]
@@ -70,6 +77,8 @@ const sceneDurationOverrides = new Map([
   ["breath", 0.72],
   ["profile", 1.13]
 ]);
+
+// Derived scene data
 const sceneBaseDurations = scenes.map((scene) => {
   const duration = Number(scene.dataset.duration);
   return (Number.isFinite(duration) && duration > 0 ? duration : 1) * durationScale;
@@ -87,6 +96,8 @@ const scenePositions = sceneDurations.reduce((positions, duration, index) => {
 }, []);
 const lastSceneIndex = Math.max(0, scenePositions.length - 1);
 const maxStoryProgress = (scenePositions[lastSceneIndex] + sceneDurations[lastSceneIndex]) || 1;
+
+// Runtime state
 const revealCopies = [];
 const revealDecorations = [];
 let autoplayFrame = null;
@@ -96,7 +107,7 @@ let preloadComplete = false;
 let preloadStarted = false;
 let preloadPromise = null;
 let loadingFinishFrame = null;
-const initialAutoplayEnabled = true;
+const initialAutoplayEnabled = false;
 
 root.style.setProperty("--scene-count", (maxStoryProgress + 1).toFixed(2));
 
@@ -104,16 +115,28 @@ function setLoadingProgress(progress) {
   root.style.setProperty("--loading-progress", clamp(progress).toFixed(3));
 }
 
+function addBodyLock(lockName) {
+  document.body.classList.add(bodyLockClasses[lockName]);
+}
+
+function removeBodyLock(lockName) {
+  document.body.classList.remove(bodyLockClasses[lockName]);
+}
+
+function hasBodyLock(lockName) {
+  return document.body.classList.contains(bodyLockClasses[lockName]);
+}
+
 function showLoadingGate() {
   if (!loadingGate) return;
   loadingGate.classList.add("is-active");
-  document.body.classList.add("loading-lock");
+  addBodyLock("loading");
 }
 
 function hideLoadingGate() {
   if (!loadingGate) return;
   loadingGate.classList.remove("is-active");
-  document.body.classList.remove("loading-lock");
+  removeBodyLock("loading");
 }
 
 function getAutoplayEase(progress) {
@@ -205,17 +228,110 @@ function waitForPageLoad() {
 function hideContentWarning() {
   if (!contentWarning) return;
   contentWarning.classList.add("is-hidden");
-  document.body.classList.remove("warning-open");
+  removeBodyLock("warning");
 
   prepareAutoplayStart();
 }
 
 if (contentWarning) {
-  document.body.classList.add("warning-open");
+  addBodyLock("warning");
   warningEnter?.focus({ preventScroll: true });
   preloadStoryAssets();
 
   warningEnter?.addEventListener("click", () => hideContentWarning());
+}
+
+function getTextNodes(block) {
+  const walker = document.createTreeWalker(block, NodeFilter.SHOW_TEXT);
+  const textNodes = [];
+
+  while (walker.nextNode()) {
+    textNodes.push(walker.currentNode);
+  }
+
+  return textNodes;
+}
+
+function createRevealChar(char, classes = []) {
+  const span = document.createElement("span");
+  const isSpace = /\s/.test(char);
+
+  span.className = isSpace ? "reveal-char reveal-space" : "reveal-char";
+  classes.forEach((className) => span.classList.add(className));
+  span.textContent = isSpace ? " " : char;
+
+  return span;
+}
+
+function setRevealCharRatios(chars) {
+  const last = Math.max(1, chars.length - 1);
+
+  chars.forEach((char, index) => {
+    char.style.setProperty("--char-ratio", ((index / last) * 0.94).toFixed(4));
+  });
+}
+
+function wrapCopyTextBlock(block) {
+  const isHeadline = block.matches("h1, h2");
+  const isKicker = block.matches(".eyebrow, .ending-kicker");
+  const revealClasses = [
+    ...(isHeadline ? ["reveal-headline"] : []),
+    ...(isKicker ? ["reveal-kicker"] : [])
+  ];
+  const chars = [];
+
+  getTextNodes(block).forEach((node) => {
+    const fragment = document.createDocumentFragment();
+    let word = document.createElement("span");
+    word.className = "reveal-word";
+
+    function appendWord() {
+      if (!word.hasChildNodes()) return;
+      fragment.appendChild(word);
+      word = document.createElement("span");
+      word.className = "reveal-word";
+    }
+
+    [...node.textContent].forEach((char) => {
+      const isSpace = /\s/.test(char);
+
+      if (isSpace) {
+        appendWord();
+      }
+
+      const span = createRevealChar(char, revealClasses);
+      chars.push(span);
+
+      if (isSpace) {
+        fragment.appendChild(span);
+      } else {
+        word.appendChild(span);
+      }
+    });
+
+    appendWord();
+    node.replaceWith(fragment);
+  });
+
+  return chars;
+}
+
+function wrapDecorativeTextBlock(block) {
+  const chars = [];
+
+  getTextNodes(block).forEach((node) => {
+    const fragment = document.createDocumentFragment();
+
+    [...node.textContent].forEach((char) => {
+      const span = createRevealChar(char);
+      chars.push(span);
+      fragment.appendChild(span);
+    });
+
+    node.replaceWith(fragment);
+  });
+
+  return chars;
 }
 
 function prepareTextReveal() {
@@ -225,61 +341,9 @@ function prepareTextReveal() {
     const sceneName = scene?.dataset.scene;
     const typedKickerSelector = typedKickerScenes.has(sceneName) ? ", .eyebrow, .ending-kicker" : "";
     const textBlocks = [...copy.querySelectorAll(`h1, h2, p:not(.eyebrow):not(.ending-kicker), .button${typedKickerSelector}`)];
-    const chars = [];
+    const chars = textBlocks.flatMap(wrapCopyTextBlock);
 
-    textBlocks.forEach((block) => {
-      const isHeadline = block.matches("h1, h2");
-      const isKicker = block.matches(".eyebrow, .ending-kicker");
-      const walker = document.createTreeWalker(block, NodeFilter.SHOW_TEXT);
-      const textNodes = [];
-
-      while (walker.nextNode()) {
-        textNodes.push(walker.currentNode);
-      }
-
-      textNodes.forEach((node) => {
-        const fragment = document.createDocumentFragment();
-        let word = document.createElement("span");
-        word.className = "reveal-word";
-
-        function appendWord() {
-          if (!word.hasChildNodes()) return;
-          fragment.appendChild(word);
-          word = document.createElement("span");
-          word.className = "reveal-word";
-        }
-
-        [...node.textContent].forEach((char) => {
-          if (/\s/.test(char)) {
-            appendWord();
-          }
-
-          const span = document.createElement("span");
-          span.className = /\s/.test(char) ? "reveal-char reveal-space" : "reveal-char";
-          if (isHeadline) {
-            span.classList.add("reveal-headline");
-          }
-          if (isKicker) {
-            span.classList.add("reveal-kicker");
-          }
-          span.textContent = /\s/.test(char) ? " " : char;
-          chars.push({ span, isHeadline });
-          if (/\s/.test(char)) {
-            fragment.appendChild(span);
-          } else {
-            word.appendChild(span);
-          }
-        });
-
-        appendWord();
-        node.replaceWith(fragment);
-      });
-    });
-
-    const last = Math.max(1, chars.length - 1);
-    chars.forEach(({ span, isHeadline }, index) => {
-      span.style.setProperty("--char-ratio", ((index / last) * 0.94).toFixed(4));
-    });
+    setRevealCharRatios(chars);
 
     if (sceneIndex >= 0 && chars.length > 0) {
       revealCopies.push({ copy, sceneIndex });
@@ -290,32 +354,9 @@ function prepareTextReveal() {
   decorativeTextBlocks.forEach((block) => {
     const scene = block.closest(".scene");
     const sceneIndex = scenes.indexOf(scene);
-    const chars = [];
-    const walker = document.createTreeWalker(block, NodeFilter.SHOW_TEXT);
-    const textNodes = [];
+    const chars = wrapDecorativeTextBlock(block);
 
-    while (walker.nextNode()) {
-      textNodes.push(walker.currentNode);
-    }
-
-    textNodes.forEach((node) => {
-      const fragment = document.createDocumentFragment();
-
-      [...node.textContent].forEach((char) => {
-        const span = document.createElement("span");
-        span.className = /\s/.test(char) ? "reveal-char reveal-space" : "reveal-char";
-        span.textContent = /\s/.test(char) ? " " : char;
-        chars.push(span);
-        fragment.appendChild(span);
-      });
-
-      node.replaceWith(fragment);
-    });
-
-    const last = Math.max(1, chars.length - 1);
-    chars.forEach((char, index) => {
-      char.style.setProperty("--char-ratio", ((index / last) * 0.94).toFixed(4));
-    });
+    setRevealCharRatios(chars);
 
     if (sceneIndex >= 0 && chars.length > 0) {
       const inner = document.createElement("span");
@@ -403,16 +444,13 @@ function prepareAutoplayStart() {
 }
 
 function blockAutoplayInput(event) {
-  if (
-    !document.body.classList.contains("autoplay-lock") &&
-    !document.body.classList.contains("loading-lock")
-  ) return;
+  if (!hasBodyLock("autoplay") && !hasBodyLock("loading")) return;
   event.preventDefault();
 }
 
 function completeInitialAutoplay() {
   autoplayFrame = null;
-  document.body.classList.remove("autoplay-lock");
+  removeBodyLock("autoplay");
   autoplayStorage.setItem(autoplayStorageKey, "true");
   syncControlledTarget();
   update();
@@ -422,7 +460,7 @@ function startInitialAutoplay(initialElapsed = 0) {
   if (!shouldRunInitialAutoplay()) return;
 
   autoplayStarted = true;
-  document.body.classList.add("autoplay-lock");
+  addBodyLock("autoplay");
   renderInitialAutoplayAt(initialElapsed);
 
   const startedAt = performance.now() - initialElapsed;
@@ -460,8 +498,8 @@ function getMaxScrollTop() {
 
 function isScrollControlPaused() {
   return isContentWarningVisible() ||
-    document.body.classList.contains("loading-lock") ||
-    document.body.classList.contains("autoplay-lock");
+    hasBodyLock("loading") ||
+    hasBodyLock("autoplay");
 }
 
 function syncControlledTarget() {
@@ -616,6 +654,11 @@ function sceneScrollTop(sceneIndex) {
   return maxScroll * (targetPosition / maxStoryProgress);
 }
 
+function getScenePosition(sceneName, fallback = 0) {
+  const sceneIndex = sceneIndexByName.get(sceneName);
+  return sceneIndex === undefined ? fallback : scenePositions[sceneIndex] ?? fallback;
+}
+
 function scrollToScene(sceneIndex, behavior = "smooth") {
   setControlledScrollTarget(sceneScrollTop(sceneIndex), behavior === "auto");
 }
@@ -652,6 +695,71 @@ function syncScrollAnchors() {
   });
 }
 
+function updateSceneProgress(scene, index, storyProgress) {
+  const distance = sceneDistance(storyProgress, index);
+  const visibility = sceneVisibility(distance, index);
+  const localLead = scene.dataset.scene === "scare" ? 0 : 0.5;
+  const local = clamp((storyProgress - scenePositions[index] + localLead) / sceneDurations[index]);
+  const linear = clamp((storyProgress - scenePositions[index]) / sceneDurations[index]);
+  const sparrowLead = index === 0 ? 0 : 0.34;
+  const sparrowMotion = clamp((storyProgress - scenePositions[index] + sparrowLead) / sceneDurations[index]);
+
+  if (scene.dataset.scene === "cart") {
+    const sceneName = scene.dataset.scene;
+    const duration = sceneBaseDurations[index];
+    const textDelay = textRevealDelays.get(sceneName) ?? 0;
+    const revealWindow = textRevealWindows.get(sceneName) ?? Math.max(0.78, Math.min(1.45, duration * 0.68));
+    const bonkStart = scenePositions[index] + textDelay - 0.08 + revealWindow * 0.72;
+    const bonkReveal = smoothstep((storyProgress - bonkStart) / 0.18);
+
+    scene.style.setProperty("--bonk-reveal", bonkReveal.toFixed(4));
+  }
+
+  scene.style.setProperty("--scene-opacity", visibility.toFixed(4));
+  scene.style.setProperty("--scene-visibility", visibility.toFixed(4));
+  scene.style.setProperty("--scene-progress", local.toFixed(4));
+  scene.style.setProperty("--scene-linear", linear.toFixed(4));
+
+  if (scene.dataset.scene === "scare") {
+    scene.style.setProperty("--scare-copy-reveal", smoothstep((linear - 0.24) / 0.22).toFixed(4));
+  }
+
+  scene.style.setProperty("--sparrow-motion", sparrowMotion.toFixed(4));
+  scene.classList.toggle("is-active", visibility > 0.5);
+
+  return visibility;
+}
+
+function applyRootProgressVars({
+  progress,
+  displayProgress,
+  darkProgress,
+  headerBg,
+  headerBlur,
+  bob,
+  sway,
+  approachScale,
+  tunnelOpacity,
+  tunnelCenter,
+  easterEyeProgress,
+  gazeOpacity,
+  lateDarkOpacity
+}) {
+  root.style.setProperty("--progress", progress.toFixed(4));
+  root.style.setProperty("--display-progress", displayProgress.toFixed(4));
+  root.style.setProperty("--dark-progress", darkProgress.toFixed(4));
+  root.style.setProperty("--header-bg", headerBg.toFixed(3));
+  root.style.setProperty("--header-blur", `${headerBlur.toFixed(2)}px`);
+  root.style.setProperty("--camera-bob", `${bob.toFixed(2)}px`);
+  root.style.setProperty("--camera-sway", `${sway.toFixed(2)}px`);
+  root.style.setProperty("--approach-scale", approachScale.toFixed(4));
+  root.style.setProperty("--tunnel-opacity", tunnelOpacity.toFixed(4));
+  root.style.setProperty("--tunnel-center", `${tunnelCenter.toFixed(2)}%`);
+  root.style.setProperty("--easter-eye-progress", easterEyeProgress.toFixed(4));
+  root.style.setProperty("--persistent-gaze-opacity", gazeOpacity.toFixed(4));
+  root.style.setProperty("--late-dark-opacity", lateDarkOpacity.toFixed(4));
+}
+
 function update() {
   const scrollTop = window.scrollY || document.documentElement.scrollTop;
   const maxScroll = document.documentElement.scrollHeight - window.innerHeight;
@@ -663,10 +771,10 @@ function update() {
   const headerBg = 0.24 + headerProgress * 0.5;
   const headerBlur = 3 + headerProgress * 7;
   const storyProgress = progress * maxStoryProgress;
-  const dayPosition = scenePositions[sceneIndexByName.get("day") ?? 0] ?? 0;
-  const vanishPosition = scenePositions[sceneIndexByName.get("vanish") ?? 3] ?? 3;
-  const uneasePosition = scenePositions[sceneIndexByName.get("unease") ?? 4] ?? 4;
-  const stillnessPosition = scenePositions[sceneIndexByName.get("night") ?? sceneIndexByName.size] ?? maxStoryProgress;
+  const dayPosition = getScenePosition("day");
+  const vanishPosition = getScenePosition("vanish", 3);
+  const uneasePosition = getScenePosition("unease", 4);
+  const stillnessPosition = getScenePosition("night", maxStoryProgress);
   const chaseProgress = clamp((storyProgress - dayPosition) / Math.max(1, vanishPosition - dayPosition));
   const chaseRate = 1 + chaseProgress * 2.35;
   const afterVanish = smoothstep((storyProgress - uneasePosition + 0.1) / 0.32);
@@ -682,13 +790,14 @@ function update() {
   const swayBase = storyProgress < uneasePosition ? chaseSway : lookAroundSway;
   const bob = Math.sin(walkPhase * chaseRate) * bobBase * (1 - vanishStillness) * (1 - stillness);
   const sway = Math.sin(walkPhase * (storyProgress < uneasePosition ? .68 : .24)) * swayBase * (1 - vanishStillness) * (1 - stillness);
-  const watchedPosition = scenePositions[sceneIndexByName.get("watched") ?? 7] ?? 7;
-  const gazeEndPosition = scenePositions[sceneIndexByName.get("breath") ?? sceneIndexByName.get("scare") ?? 12] ?? 12;
-  const cartPosition = scenePositions[sceneIndexByName.get("cart") ?? sceneIndexByName.size] ?? maxStoryProgress;
-  const panicPosition = scenePositions[sceneIndexByName.get("panic") ?? sceneIndexByName.size] ?? maxStoryProgress;
-  const nightPosition = scenePositions[sceneIndexByName.get("night") ?? sceneIndexByName.size] ?? maxStoryProgress;
-  const tauntPosition = scenePositions[sceneIndexByName.get("taunt") ?? sceneIndexByName.size] ?? maxStoryProgress;
-  const breathPosition = scenePositions[sceneIndexByName.get("breath") ?? sceneIndexByName.get("scare") ?? 12] ?? maxStoryProgress;
+  const watchedPosition = getScenePosition("watched", 7);
+  const scarePosition = getScenePosition("scare", 12);
+  const gazeEndPosition = getScenePosition("breath", scarePosition);
+  const cartPosition = getScenePosition("cart", maxStoryProgress);
+  const panicPosition = getScenePosition("panic", maxStoryProgress);
+  const nightPosition = getScenePosition("night", maxStoryProgress);
+  const tauntPosition = getScenePosition("taunt", maxStoryProgress);
+  const breathPosition = getScenePosition("breath", scarePosition);
   const firstApproachProgress = smoothstep((storyProgress - dayPosition) / Math.max(1, vanishPosition - dayPosition));
   const secondApproachProgress = smoothstep((storyProgress - uneasePosition) / Math.max(1, panicPosition - uneasePosition));
   const approachScale = firstApproachProgress * 0.3 + secondApproachProgress * 0.15;
@@ -702,50 +811,28 @@ function update() {
     (1 - clamp((storyProgress - gazeEndPosition + 0.26) / 0.1));
   const lateDarkOpacity = smoothstep((storyProgress - stillnessPosition + 0.08) / 0.18) *
     (1 - smoothstep((storyProgress - cartPosition + 0.15) / 0.45));
-  root.style.setProperty("--progress", progress.toFixed(4));
-  root.style.setProperty("--display-progress", displayProgress.toFixed(4));
-  root.style.setProperty("--dark-progress", darkProgress.toFixed(4));
-  root.style.setProperty("--header-bg", headerBg.toFixed(3));
-  root.style.setProperty("--header-blur", `${headerBlur.toFixed(2)}px`);
-  root.style.setProperty("--camera-bob", `${bob.toFixed(2)}px`);
-  root.style.setProperty("--camera-sway", `${sway.toFixed(2)}px`);
-  root.style.setProperty("--approach-scale", approachScale.toFixed(4));
-  root.style.setProperty("--tunnel-opacity", tunnelOpacity.toFixed(4));
-  root.style.setProperty("--tunnel-center", `${tunnelCenter.toFixed(2)}%`);
-  root.style.setProperty("--easter-eye-progress", easterEyeProgress.toFixed(4));
-  root.style.setProperty("--persistent-gaze-opacity", gazeOpacity.toFixed(4));
-  root.style.setProperty("--late-dark-opacity", lateDarkOpacity.toFixed(4));
+
+  applyRootProgressVars({
+    progress,
+    displayProgress,
+    darkProgress,
+    headerBg,
+    headerBlur,
+    bob,
+    sway,
+    approachScale,
+    tunnelOpacity,
+    tunnelCenter,
+    easterEyeProgress,
+    gazeOpacity,
+    lateDarkOpacity
+  });
 
   let activeSceneIndex = 0;
   let activeSceneVisibility = -1;
 
   scenes.forEach((scene, index) => {
-    const distance = sceneDistance(storyProgress, index);
-    const visibility = sceneVisibility(distance, index);
-    const localLead = scene.dataset.scene === "scare" ? 0 : 0.5;
-    const local = clamp((storyProgress - scenePositions[index] + localLead) / sceneDurations[index]);
-    const linear = clamp((storyProgress - scenePositions[index]) / sceneDurations[index]);
-    const sparrowLead = index === 0 ? 0 : 0.34;
-    const sparrowMotion = clamp((storyProgress - scenePositions[index] + sparrowLead) / sceneDurations[index]);
-    if (scene.dataset.scene === "cart") {
-      const sceneName = scene.dataset.scene;
-      const duration = sceneBaseDurations[index];
-      const textDelay = textRevealDelays.get(sceneName) ?? 0;
-      const revealWindow = textRevealWindows.get(sceneName) ?? Math.max(0.78, Math.min(1.45, duration * 0.68));
-      const bonkStart = scenePositions[index] + textDelay - 0.08 + revealWindow * 0.72;
-      const bonkReveal = smoothstep((storyProgress - bonkStart) / 0.18);
-
-      scene.style.setProperty("--bonk-reveal", bonkReveal.toFixed(4));
-    }
-    scene.style.setProperty("--scene-opacity", visibility.toFixed(4));
-    scene.style.setProperty("--scene-visibility", visibility.toFixed(4));
-    scene.style.setProperty("--scene-progress", local.toFixed(4));
-    scene.style.setProperty("--scene-linear", linear.toFixed(4));
-    if (scene.dataset.scene === "scare") {
-      scene.style.setProperty("--scare-copy-reveal", smoothstep((linear - 0.24) / 0.22).toFixed(4));
-    }
-    scene.style.setProperty("--sparrow-motion", sparrowMotion.toFixed(4));
-    scene.classList.toggle("is-active", visibility > 0.5);
+    const visibility = updateSceneProgress(scene, index, storyProgress);
 
     if (visibility > activeSceneVisibility) {
       activeSceneVisibility = visibility;

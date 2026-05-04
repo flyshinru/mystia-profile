@@ -22,6 +22,8 @@
   color-scheme: light;
 }
 
+/* Base */
+
 * {
   box-sizing: border-box;
 }
@@ -64,6 +66,8 @@ body.autoplay-lock .site-header,
 body.autoplay-lock .scroll-cue {
   pointer-events: none;
 }
+
+/* Entry Overlays */
 
 .content-warning {
   position: fixed;
@@ -151,6 +155,8 @@ body.autoplay-lock .scroll-cue {
 .warning-enter {
   background: rgba(255, 255, 246, .22);
 }
+
+/* Persistent World */
 
 .world {
   position: fixed;
@@ -413,6 +419,8 @@ a {
   transition: width 180ms ease;
 }
 
+/* Persistent Effects */
+
 .persistent-gaze {
   position: fixed;
   inset: 0;
@@ -571,6 +579,8 @@ nav a {
   text-shadow: 0 2px 10px rgba(0, 0, 0, .74);
 }
 
+/* Shared Scene Layout */
+
 .scene {
   position: relative;
   min-height: 100vh;
@@ -589,7 +599,6 @@ body.fixed-story .scene {
   opacity: var(--scene-opacity, 0);
   pointer-events: none;
   transform: scale(calc(.985 + var(--scene-visibility, 0) * .015));
-  transition: opacity 120ms linear;
 }
 
 body.fixed-story .scene.is-active {
@@ -672,15 +681,7 @@ body.fixed-story .scene.is-active {
 .taunt-cards .reveal-char {
   display: inline-block;
   white-space: pre-wrap;
-  opacity: clamp(0, calc((var(--char-reveal, var(--text-reveal, 1)) - var(--char-ratio, 0)) * 28), 1);
-  transform:
-    translateY(calc((1 - clamp(0, calc((var(--char-reveal, var(--text-reveal, 1)) - var(--char-ratio, 0)) * 28), 1)) * .45em))
-    scale(calc(.98 + clamp(0, calc((var(--char-reveal, var(--text-reveal, 1)) - var(--char-ratio, 0)) * 28), 1) * .02));
-  filter: blur(calc((1 - clamp(0, calc((var(--char-reveal, var(--text-reveal, 1)) - var(--char-ratio, 0)) * 28), 1)) * 4px));
-  transition:
-    opacity 90ms linear,
-    transform 120ms ease-out,
-    filter 120ms ease-out;
+  opacity: clamp(0, calc((var(--char-reveal, var(--text-reveal, 1)) - var(--char-ratio, 0)) * 999), 1);
 }
 
 .copy .reveal-headline {
@@ -702,9 +703,6 @@ body.fixed-story .scene.is-active {
   overflow: hidden;
   transform: none;
   filter: none;
-  transition:
-    max-width 36ms steps(1, end),
-    opacity 36ms linear;
 }
 
 .copy .reveal-space,
@@ -721,6 +719,8 @@ body.fixed-story .scene.is-active {
   letter-spacing: .18em;
   text-transform: uppercase;
 }
+
+/* Day Scene */
 
 .scene-day {
   display: flex;
@@ -765,7 +765,6 @@ body.fixed-story .scene.is-active {
   background-size: 210px 180px, 260px 220px, 300px 260px, 180px 200px;
   opacity: calc(.24 + var(--scene-progress) * .22);
   filter: blur(.2px);
-  animation: sunMotes 18s linear infinite;
 }
 
 .scene-day::after {
@@ -962,7 +961,6 @@ body.fixed-story .scene.is-active {
   border-radius: 100% 12% 90% 18%;
   background: linear-gradient(135deg, rgba(255, 255, 244, .92), rgba(174, 207, 178, .64));
   transform-origin: 92% 82%;
-  animation: sparrowWing .54s ease-in-out infinite;
 }
 
 .sparrow-wing.wing-left {
@@ -975,7 +973,6 @@ body.fixed-story .scene.is-active {
   opacity: .9;
   transform-origin: 8% 82%;
   transform: rotate(calc(24deg + var(--wing-open, 0deg))) scaleX(-1);
-  animation-delay: -.27s;
 }
 
 .sparrow-tail {
@@ -1068,6 +1065,8 @@ body.fixed-story .scene.is-active {
   writing-mode: vertical-rl;
 }
 
+/* Forest Path Scenes */
+
 .scene-lure {
   display: grid;
   place-items: center;
@@ -1092,7 +1091,6 @@ body.fixed-story .scene.is-active {
   opacity: calc(.18 + var(--scene-progress) * .24);
   transform: scale(calc(.9 + var(--scene-progress) * .16));
   filter: blur(.4px);
-  animation: lurePulse 4.8s ease-in-out infinite;
 }
 
 .scene-lure::after {
@@ -1158,10 +1156,9 @@ body.fixed-story .scene.is-active {
   align-items: center;
   justify-content: center;
   min-height: 160vh;
-  perspective: 900px;
   background:
-    radial-gradient(circle at 50% calc(34% + var(--scene-progress) * 18%), rgba(232, 255, 210, .18), transparent calc(24% - var(--scene-progress) * 8%)),
-    linear-gradient(180deg, rgba(217, 250, 240, .08), rgba(158, 191, 180, .08) 50%, rgba(49, 72, 74, .14) 100%);
+    radial-gradient(circle at 50% 42%, rgba(232, 255, 210, .1), transparent 30%),
+    linear-gradient(180deg, rgba(217, 250, 240, .05), rgba(49, 72, 74, .1));
 }
 
 .scene-trail::before,
@@ -1175,28 +1172,16 @@ body.fixed-story .scene.is-active {
 .scene-trail::before {
   z-index: 2;
   background:
-    radial-gradient(ellipse at 50% 40%, transparent 0 24%, rgba(5, 15, 16, .28) 55%, rgba(0, 0, 0, .5) 100%);
-  opacity: calc(.18 + var(--scene-progress) * .42);
-  transform: scale(calc(1 + var(--scene-progress) * .16));
+    radial-gradient(ellipse at 50% 46%, transparent 0 34%, rgba(5, 15, 16, .2) 72%, rgba(0, 0, 0, .36) 100%);
+  opacity: .34;
 }
 
 .scene-trail::after {
-  z-index: 7;
-  background:
-    linear-gradient(104deg, transparent 0 44%, rgba(226, 255, 219, .13) 45%, transparent 47%),
-    linear-gradient(76deg, transparent 0 54%, rgba(112, 217, 234, .1) 55%, transparent 57%);
-  background-size: 340px 100%, 420px 100%;
-  opacity: calc(var(--scene-progress) * .34);
-  transform: translateX(calc(var(--scene-progress) * -60px));
-  mix-blend-mode: screen;
+  content: none;
 }
 
 .trail-depth {
-  position: absolute;
-  inset: 0;
-  z-index: 1;
-  overflow: hidden;
-  transform-style: preserve-3d;
+  display: none;
 }
 
 .path-lines {
@@ -1245,16 +1230,7 @@ body.fixed-story .scene.is-active {
 }
 
 .speed-lines {
-  position: absolute;
-  inset: 0;
-  z-index: 6;
-  pointer-events: none;
-  background:
-    linear-gradient(104deg, transparent 0 46%, rgba(255, 255, 255, .34) 47%, transparent 49%),
-    linear-gradient(76deg, transparent 0 49%, rgba(255, 255, 255, .23) 50%, transparent 52%);
-  background-size: 190px 100%, 260px 100%;
-  opacity: calc(var(--scene-progress) * .44);
-  transform: scale(calc(1 + var(--scene-progress) * .15));
+  display: none;
 }
 
 .bamboo {
@@ -1268,14 +1244,11 @@ body.fixed-story .scene.is-active {
 }
 
 .layer-one {
-  opacity: .5;
-  transform: translateX(calc(var(--scene-progress) * -220px)) scale(calc(1 + var(--scene-progress) * .16));
+  display: none;
 }
 
 .layer-two {
-  opacity: .85;
-  filter: blur(1px);
-  transform: translateX(calc(var(--scene-progress) * 260px)) scale(calc(1 + var(--scene-progress) * .24));
+  display: none;
 }
 
 .narrow {
@@ -1316,7 +1289,6 @@ body.fixed-story .scene.is-active {
     linear-gradient(90deg, rgba(255, 255, 255, .08), transparent 28% 72%, rgba(255, 255, 255, .06));
   filter: blur(18px);
   opacity: calc(.18 + var(--scene-progress) * .34);
-  animation: fogSlide 10s ease-in-out infinite alternate;
 }
 
 .empty-trail span {
@@ -1470,7 +1442,6 @@ body.fixed-story .scene.is-active {
     linear-gradient(180deg, transparent, rgba(255, 255, 255, .07), transparent);
   filter: blur(22px);
   opacity: calc(.3 + var(--scene-progress) * .32);
-  animation: fogSlide 13s ease-in-out infinite alternate-reverse;
 }
 
 .scene-lost::after {
@@ -1520,7 +1491,6 @@ body.fixed-story .scene.is-active {
     radial-gradient(circle at 74% 30%, rgba(255, 255, 255, .12), transparent 20%),
     radial-gradient(circle at 52% 72%, rgba(255, 255, 255, .13), transparent 24%);
   filter: blur(18px);
-  animation: drift 12s linear infinite alternate;
 }
 
 .dark-one,
@@ -1568,7 +1538,6 @@ body.fixed-story .scene.is-active {
     0 0 18px rgba(104, 245, 227, .28),
     0 0 36px rgba(255, 126, 181, .1);
   opacity: calc(.36 + var(--scene-progress) * .44);
-  animation: float 5s ease-in-out infinite;
 }
 
 .story-notes span:nth-child(1) {
@@ -1663,6 +1632,8 @@ body.fixed-story .scene.is-active {
   color: rgba(167, 255, 240, .68);
 }
 
+/* Song And Gaze Scenes */
+
 .scene-song {
   display: flex;
   align-items: center;
@@ -1684,53 +1655,10 @@ body.fixed-story .scene.is-active {
     radial-gradient(ellipse at 56% 66%, rgba(0, 0, 0, .34), transparent 42%);
   opacity: calc(.16 + var(--scene-progress) * .16);
   filter: blur(18px);
-  animation: fogSlide 12s ease-in-out infinite alternate;
 }
 
 .song-ripple {
   display: none;
-}
-
-.song-bird {
-  position: absolute;
-  right: 14%;
-  top: 22%;
-  width: clamp(180px, 24vw, 320px);
-  height: clamp(150px, 20vw, 260px);
-  transform: translateY(calc(var(--scene-progress) * 32px));
-  opacity: calc(.24 + var(--scene-progress) * .48);
-}
-
-.song-bird span {
-  position: absolute;
-  display: block;
-  background: rgba(0, 0, 0, .78);
-  box-shadow: 0 0 34px rgba(92, 218, 224, .2);
-}
-
-.song-body {
-  left: 39%;
-  top: 34%;
-  width: 22%;
-  aspect-ratio: 1;
-  border-radius: 50%;
-}
-
-.song-wing {
-  top: 26%;
-  width: 42%;
-  height: 58%;
-  border-radius: 90% 8% 90% 12%;
-}
-
-.song-wing.left {
-  left: 3%;
-  transform: rotate(-18deg);
-}
-
-.song-wing.right {
-  right: 3%;
-  transform: rotate(18deg) scaleX(-1);
 }
 
 .song-notes span {
@@ -1739,7 +1667,6 @@ body.fixed-story .scene.is-active {
   text-shadow:
     0 0 18px rgba(104, 245, 227, .34),
     0 0 46px rgba(104, 245, 227, .14);
-  animation: float 4.4s ease-in-out infinite;
 }
 
 .song-notes span:nth-child(1) { left: 21%; top: 24%; }
@@ -1776,7 +1703,6 @@ body.fixed-story .scene.is-active {
     radial-gradient(circle at 50% 48%, transparent 0 24%, rgba(0, 0, 0, .56) 72%),
     linear-gradient(180deg, rgba(255, 255, 255, .04), transparent 42%, rgba(0, 0, 0, .2));
   opacity: calc(.16 + var(--scene-progress) * .42);
-  animation: silencePress 5s ease-in-out infinite;
 }
 
 .silence-ring {
@@ -1792,32 +1718,6 @@ body.fixed-story .scene.is-active {
     inset 0 0 80px rgba(255, 255, 255, .06),
     0 0 0 calc(var(--scene-progress) * 80px) rgba(255, 255, 255, .015);
   opacity: calc(.58 - var(--scene-progress) * .28);
-}
-
-.broken-notes span {
-  position: absolute;
-  color: rgba(188, 242, 238, .42);
-  font-size: clamp(42px, 7vw, 110px);
-  opacity: calc(.72 - var(--scene-progress) * .62);
-  filter: blur(calc(var(--scene-progress) * 3px));
-}
-
-.broken-notes span:nth-child(1) {
-  left: 23%;
-  top: 30%;
-  transform: rotate(calc(-8deg - var(--scene-progress) * 30deg)) translateY(calc(var(--scene-progress) * 40px));
-}
-
-.broken-notes span:nth-child(2) {
-  right: 25%;
-  top: 26%;
-  transform: rotate(calc(12deg + var(--scene-progress) * 24deg)) translateY(calc(var(--scene-progress) * 54px));
-}
-
-.broken-notes span:nth-child(3) {
-  left: 48%;
-  bottom: 20%;
-  transform: rotate(calc(4deg + var(--scene-progress) * -28deg)) translateY(calc(var(--scene-progress) * 34px));
 }
 
 .silence-copy {
@@ -2085,25 +1985,6 @@ body.fixed-story .scene.is-active {
   filter: drop-shadow(0 0 5px rgba(0, 255, 138, .95));
 }
 
-.watch-eyes span {
-  position: absolute;
-  width: clamp(32px, 5vw, 70px);
-  height: clamp(12px, 1.7vw, 24px);
-  border-radius: 50%;
-  background:
-    radial-gradient(circle at 36% 50%, rgba(255, 126, 181, .98) 0 9%, transparent 11%),
-    radial-gradient(circle at 64% 50%, rgba(255, 126, 181, .98) 0 9%, transparent 11%),
-    rgba(0, 0, 0, .82);
-  box-shadow: 0 0 24px rgba(255, 126, 181, .32);
-  opacity: calc(.08 + var(--scene-progress) * .78);
-}
-
-.watch-eyes span:nth-child(1) { left: 14%; top: 24%; transform: rotate(-8deg) scale(.72); }
-.watch-eyes span:nth-child(2) { left: 32%; bottom: 22%; transform: rotate(7deg) scale(.92); }
-.watch-eyes span:nth-child(3) { right: 38%; top: 18%; transform: rotate(4deg) scale(.62); }
-.watch-eyes span:nth-child(4) { right: 20%; top: 42%; transform: rotate(-5deg) scale(1.08); }
-.watch-eyes span:nth-child(5) { left: 52%; bottom: 16%; transform: rotate(-2deg) scale(.76); }
-
 .watch-branch {
   position: absolute;
   height: 9px;
@@ -2184,83 +2065,11 @@ body.fixed-story .scene.is-active {
   pointer-events: none;
 }
 
-.mystia-night-art {
-  position: absolute;
-  left: 50%;
-  bottom: -14%;
-  z-index: 5;
-  width: min(52vw, 720px);
-  height: min(92vh, 920px);
-  transform:
-    translateX(-50%)
-    translateY(calc((1 - var(--scene-progress)) * 36px))
-    scale(calc(.9 + var(--scene-progress) * .08));
-  object-position: 50% 42%;
-  border-radius: 40px;
-  opacity: calc(.12 + var(--scene-progress) * .82);
-  filter:
-    drop-shadow(0 0 54px rgba(255, 126, 181, .28))
-    drop-shadow(0 0 96px rgba(77, 210, 230, .12))
-    saturate(1.1)
-    contrast(1.04);
-  mix-blend-mode: lighten;
-  -webkit-mask-image: radial-gradient(ellipse at 50% 48%, #000 0 54%, rgba(0, 0, 0, .72) 68%, transparent 84%);
-  mask-image: radial-gradient(ellipse at 50% 48%, #000 0 54%, rgba(0, 0, 0, .72) 68%, transparent 84%);
-}
-
-.silhouette {
-  position: absolute;
-  left: 50%;
-  bottom: 16%;
-  z-index: 4;
-  width: clamp(250px, 38vw, 560px);
-  height: clamp(270px, 42vw, 590px);
-  transform:
-    translateX(-50%)
-    translateY(calc((1 - var(--scene-progress)) * 24px))
-    scale(calc(.96 + var(--scene-progress) * .08));
-  opacity: calc(.28 + var(--scene-progress) * .44);
-}
-
-.silhouette span {
-  position: absolute;
-  display: block;
-  background: #020205;
-  box-shadow: 0 0 40px rgba(77, 210, 230, .18);
-}
-
-.silhouette .head {
-  left: 34%;
-  top: 18%;
-  width: 32%;
-  aspect-ratio: 1;
-  border-radius: 48% 52% 44% 56%;
-}
-
-.wing {
-  top: 20%;
-  width: 42%;
-  height: 70%;
-  border-radius: 90% 8% 80% 16%;
-}
-
-.wing.left {
-  left: 3%;
-  transform: rotate(-24deg);
-}
-
-.wing.right {
-  right: 3%;
-  transform: rotate(24deg) scaleX(-1);
-}
-
 .whisper {
   margin-left: auto;
   z-index: 25;
   position: relative;
   transform-origin: 50% 50%;
-  will-change: translate, rotate;
-  animation: panicCardShake 30s ease-in-out infinite !important;
 }
 
 .whisper::before,
@@ -2271,7 +2080,6 @@ body.fixed-story .scene.is-active {
   inset: -2px;
   border: 1px solid rgba(255, 126, 181, .22);
   pointer-events: none;
-  animation: panicBorderShake 15s ease-in-out infinite !important;
 }
 
 .whisper h2 {
@@ -2286,8 +2094,9 @@ body.fixed-story .scene.is-active {
     0 0 54px rgba(80, 0, 24, .5);
   display: inline-block;
   transform-origin: 50% 50%;
-  animation: hauntedHeadlineWave 5.8s ease-in-out infinite !important;
 }
+
+/* Taunt And Panic Scenes */
 
 .scene-taunt {
   display: grid;
@@ -2310,7 +2119,6 @@ body.fixed-story .scene.is-active {
     radial-gradient(circle at 50% 30%, rgba(255, 126, 181, .18), transparent 28%),
     radial-gradient(circle at 50% 50%, transparent 0 30%, rgba(0, 0, 0, .54) 100%);
   opacity: calc(.22 + var(--scene-progress) * .34);
-  animation: silencePress 3.8s ease-in-out infinite;
 }
 
 .taunt-eye {
@@ -2355,7 +2163,6 @@ body.fixed-story .scene.is-active {
     radial-gradient(circle at 50% 30%, rgba(255, 126, 181, .18), transparent 28%),
     radial-gradient(circle at 50% 50%, transparent 0 30%, rgba(0, 0, 0, .54) 100%);
   opacity: calc(.22 + var(--scene-progress) * .34);
-  animation: silencePress 3.8s ease-in-out infinite;
 }
 
 .scene-devour::after {
@@ -2458,8 +2265,6 @@ body.fixed-story .scene.is-active {
   opacity: calc((.28 + var(--scene-progress) * .62) * var(--card-reveal, 1));
   backdrop-filter: blur(5px);
   transform-origin: 50% 50%;
-  will-change: translate, rotate;
-  animation: panicCardShake 18s ease-in-out infinite !important;
 }
 
 .decorative-type {
@@ -2477,7 +2282,6 @@ body.fixed-story .scene.is-active {
   inset: -2px;
   border: 1px solid rgba(255, 126, 181, .28);
   pointer-events: none;
-  animation: panicBorderShake 9s ease-in-out infinite !important;
 }
 
 .laugh-cards > span:nth-child(1) {
@@ -2490,21 +2294,18 @@ body.fixed-story .scene.is-active {
   right: 10%;
   top: 31%;
   transform: rotate(8deg) translateY(calc((1 - var(--scene-progress)) * -22px));
-  animation-delay: -.05s;
 }
 
 .laugh-cards > span:nth-child(3) {
   left: 14%;
   bottom: 17%;
   transform: rotate(5deg) translateX(calc((1 - var(--scene-progress)) * -34px));
-  animation-delay: -.1s;
 }
 
 .laugh-cards > span:nth-child(4) {
   right: 4%;
   bottom: 8%;
   transform: rotate(-6deg) translateX(calc((1 - var(--scene-progress)) * 34px));
-  animation-delay: -.15s;
 }
 
 .devour-copy {
@@ -2514,8 +2315,6 @@ body.fixed-story .scene.is-active {
   background: rgba(6, 0, 4, .58);
   border-color: rgba(255, 126, 181, .24);
   transform-origin: 50% 50%;
-  will-change: translate, rotate;
-  animation: panicCardShake 30s ease-in-out infinite !important;
 }
 
 .devour-copy h2 {
@@ -2526,7 +2325,6 @@ body.fixed-story .scene.is-active {
     2px 0 rgba(255, 126, 181, .36),
     -2px 0 rgba(0, 0, 0, .8),
     0 0 54px rgba(120, 0, 36, .52);
-  animation: hauntedHeadlineWave 5.8s ease-in-out infinite !important;
 }
 
 .taunt-cards > span {
@@ -2563,8 +2361,6 @@ body.fixed-story .scene.is-active {
   opacity: calc((.48 + var(--scene-progress) * .5) * var(--card-reveal, 1));
   overflow: hidden;
   transform-origin: 50% 50%;
-  will-change: translate, rotate;
-  animation: panicCardShake 18s ease-in-out infinite !important;
 }
 
 .taunt-cards > span::before,
@@ -2593,28 +2389,24 @@ body.fixed-story .scene.is-active {
     radial-gradient(circle at 78% 92%, rgba(255, 20, 84, .22), transparent 24%);
   mix-blend-mode: screen;
   opacity: calc(.16 + var(--scene-progress) * .26);
-  animation: panicBorderShake 9s ease-in-out infinite !important;
 }
 
 .taunt-cards > span:nth-child(1) {
   left: 9%;
   top: 25%;
   transform: rotate(calc(-8deg + var(--scene-progress) * 2deg)) translateY(calc((1 - var(--scene-progress)) * 28px));
-  animation-delay: -.04s;
 }
 
 .taunt-cards > span:nth-child(2) {
   right: 8%;
   top: 34%;
   transform: rotate(calc(7deg - var(--scene-progress) * 2deg)) translateY(calc((1 - var(--scene-progress)) * -24px));
-  animation-delay: -.11s;
 }
 
 .taunt-cards > span:nth-child(3) {
   left: 14%;
   bottom: 14%;
   transform: rotate(calc(3deg + var(--scene-progress) * 2deg)) translateX(calc((1 - var(--scene-progress)) * -36px));
-  animation-delay: -.16s;
 }
 
 .taunt-copy {
@@ -2624,8 +2416,6 @@ body.fixed-story .scene.is-active {
   transform: translateY(calc(-8vh + var(--scene-progress) * 10px));
   z-index: 8;
   transform-origin: 50% 50%;
-  will-change: translate, rotate;
-  animation: panicCardShake 30s ease-in-out infinite !important;
 }
 
 .taunt-copy h2 {
@@ -2636,7 +2426,6 @@ body.fixed-story .scene.is-active {
     2px 0 rgba(255, 126, 181, .34),
     -2px 0 rgba(15, 0, 8, .68),
     0 0 44px rgba(120, 0, 36, .42);
-  animation: hauntedHeadlineWave 5.8s ease-in-out infinite !important;
 }
 
 .scene-panic {
@@ -2658,16 +2447,6 @@ body.fixed-story .scene.is-active {
     radial-gradient(circle at 50% 50%, transparent 0 22%, rgba(255, 126, 181, .18) 44%, rgba(0, 0, 0, .68) 100%),
     repeating-linear-gradient(90deg, rgba(255, 255, 255, .05) 0 1px, transparent 1px 11px);
   opacity: calc(.12 + var(--scene-progress) * .32);
-  mix-blend-mode: screen;
-}
-
-.panic-noise {
-  position: absolute;
-  inset: -10%;
-  background:
-    repeating-linear-gradient(0deg, rgba(255, 255, 255, .08) 0 1px, transparent 1px 4px),
-    repeating-linear-gradient(90deg, rgba(255, 126, 181, .07) 0 1px, transparent 1px 7px);
-  opacity: calc(.12 + var(--scene-progress) * .26);
   mix-blend-mode: screen;
 }
 
@@ -2712,7 +2491,6 @@ body.fixed-story .scene.is-active {
     0 0 42px rgba(255, 126, 181, .16),
     0 22px 80px rgba(0, 0, 0, .38);
   filter: drop-shadow(0 0 24px rgba(255, 126, 181, .2));
-  animation: panicCardShake .42s ease-in-out infinite !important;
 }
 
 .panic-copy::before {
@@ -2721,7 +2499,6 @@ body.fixed-story .scene.is-active {
   inset: -2px;
   border: 1px solid rgba(255, 126, 181, .28);
   pointer-events: none;
-  animation: panicBorderShake .32s ease-in-out infinite !important;
 }
 
 .panic-copy h2 {
@@ -2730,7 +2507,6 @@ body.fixed-story .scene.is-active {
     2px 0 rgba(255, 126, 181, .42),
     -2px 0 rgba(99, 229, 239, .3),
     0 0 28px rgba(255, 255, 255, .18);
-  animation: panicLetters .11s steps(2) infinite;
 }
 
 .scene-breath {
@@ -2749,17 +2525,6 @@ body.fixed-story .scene.is-active {
     radial-gradient(circle at 50% 54%, rgba(255, 255, 255, .1), transparent 10%),
     radial-gradient(circle at 50% 54%, transparent 0 22%, rgba(0, 0, 0, .88) 46%, #000 100%);
   opacity: calc(.16 + var(--scene-progress) * .18);
-  animation: breathPulse 2.2s ease-in-out infinite reverse;
-}
-
-.breath-pulse {
-  position: absolute;
-  inset: 0;
-  background:
-    radial-gradient(circle at 50% 54%, rgba(255, 126, 181, .08), transparent 22%),
-    #000;
-  opacity: calc(.18 + var(--scene-progress) * .22);
-  animation: breathPulse 1.8s ease-in-out infinite;
 }
 
 .breath-copy {
@@ -2777,6 +2542,8 @@ body.fixed-story .scene.is-active {
   letter-spacing: .18em;
 }
 
+/* Scare And Faint Scenes */
+
 .scene-scare {
   display: grid;
   place-items: center;
@@ -2787,43 +2554,6 @@ body.fixed-story .scene.is-active {
 
 .scene-scare::before {
   content: none;
-}
-
-.blackout-gaze span {
-  position: absolute;
-  width: clamp(58px, 8vw, 150px);
-  height: clamp(22px, 2.9vw, 56px);
-  border-radius: 50%;
-  background:
-    radial-gradient(circle at 35% 50%, #ff7eb5 0 9%, transparent 11%),
-    radial-gradient(circle at 65% 50%, #ff7eb5 0 9%, transparent 11%),
-    radial-gradient(ellipse at 50% 50%, #010101 0 62%, transparent 64%);
-  box-shadow:
-    0 0 24px rgba(255, 126, 181, .85),
-    0 0 70px rgba(255, 126, 181, .38),
-    0 0 130px rgba(255, 126, 181, .16);
-  opacity: calc(.78 + var(--scene-progress) * .22);
-}
-
-.blackout-gaze span:nth-child(1) { left: 10%; top: 16%; transform: rotate(-8deg) scale(.9); }
-.blackout-gaze span:nth-child(2) { left: 28%; top: 35%; transform: rotate(6deg) scale(.72); }
-.blackout-gaze span:nth-child(3) { right: 14%; top: 18%; transform: rotate(8deg) scale(.82); }
-.blackout-gaze span:nth-child(4) { right: 24%; bottom: 23%; transform: rotate(-5deg) scale(1.02); }
-.blackout-gaze span:nth-child(5) { left: 16%; bottom: 18%; transform: rotate(4deg) scale(.8); }
-.blackout-gaze span:nth-child(6) { left: 48%; top: 12%; transform: rotate(-3deg) scale(.62); }
-.blackout-gaze span:nth-child(7) { right: 42%; bottom: 14%; transform: rotate(7deg) scale(.68); }
-.blackout-gaze span:nth-child(8) { right: 7%; bottom: 38%; transform: rotate(-10deg) scale(.72); }
-.blackout-gaze span:nth-child(9) { left: 42%; top: 52%; transform: rotate(3deg) scale(.56); }
-.blackout-gaze span:nth-child(10) { left: 6%; bottom: 44%; transform: rotate(-6deg) scale(.58); }
-.blackout-gaze span:nth-child(11) { right: 33%; top: 38%; transform: rotate(5deg) scale(.52); }
-.blackout-gaze span:nth-child(12) { left: 68%; bottom: 10%; transform: rotate(-4deg) scale(.64); }
-
-.flash {
-  position: absolute;
-  inset: 0;
-  background:
-    radial-gradient(circle at 50% 46%, rgba(255, 126, 181, .4), transparent 30%),
-    #000;
 }
 
 .scare-mystia-art {
@@ -2873,15 +2603,6 @@ body.fixed-story .scene.is-active {
   color: white;
 }
 
-.faint-noise {
-  position: absolute;
-  inset: 0;
-  background:
-    radial-gradient(circle at 50% 50%, rgba(255, 126, 181, .12), transparent 24%),
-    repeating-linear-gradient(0deg, rgba(255, 255, 255, .04) 0 1px, transparent 1px 7px);
-  opacity: calc(.24 - var(--scene-progress) * .22);
-}
-
 .faint-mystia-art {
   position: absolute;
   left: 50%;
@@ -2922,6 +2643,8 @@ body.fixed-story .scene.is-active {
   bottom: 0;
   transform: translateY(calc(100% - var(--scene-progress) * 100%));
 }
+
+/* Cart Ending */
 
 .scene-cart {
   min-height: 110vh;
@@ -2985,7 +2708,6 @@ body.fixed-story .scene.is-active {
     radial-gradient(ellipse at 50% 72%, rgba(255, 172, 92, .16), transparent 42%);
   opacity: calc(.42 + var(--scene-progress) * .28);
   mix-blend-mode: screen;
-  animation: lanternWarmth 4.8s ease-in-out infinite;
 }
 
 .scene-cart::before {
@@ -3026,7 +2748,6 @@ body.fixed-story .scene.is-active {
     radial-gradient(ellipse at 50% 70%, rgba(255, 244, 213, .18), transparent 64%),
     radial-gradient(ellipse at 50% 34%, rgba(255, 255, 255, .12), transparent 58%);
   filter: blur(13px);
-  animation: soupSteam 6s ease-in-out infinite;
 }
 
 .cart-steam-cloud span:nth-child(1) {
@@ -3119,7 +2840,6 @@ body.fixed-story .scene.is-active {
   height: 120px;
   border-left: 4px solid rgba(255, 255, 255, .36);
   border-radius: 50%;
-  animation: steam 4s ease-in-out infinite;
 }
 
 .steam-a {
@@ -3196,7 +2916,6 @@ body.fixed-story .scene.is-active {
     0 26px 80px rgba(0, 0, 0, .42),
     0 0 44px rgba(255, 172, 92, .14);
   filter: saturate(1.03) contrast(1.04);
-  animation: bonkFloat 5.2s ease-in-out infinite;
 }
 
 .bonk-burst {
@@ -3207,7 +2926,6 @@ body.fixed-story .scene.is-active {
   pointer-events: none;
   transform: rotate(-8deg) scale(calc(.82 + var(--bonk-reveal, 0) * .18));
   opacity: calc(var(--bonk-reveal, 0) * .96);
-  animation: bonkPop 1.7s cubic-bezier(.2, 1.4, .35, 1) infinite;
 }
 
 .bonk-burst::before {
@@ -3306,6 +3024,8 @@ body.fixed-story .scene.is-active {
     background 160ms ease;
 }
 
+/* Profile Scene */
+
 .scene-profile {
   display: flex;
   align-items: center;
@@ -3358,65 +3078,6 @@ body.fixed-story .scene.is-active {
   filter: saturate(1.05) contrast(1.03);
 }
 
-.profile-mystia {
-  position: absolute;
-  left: 50%;
-  top: 0;
-  width: 70%;
-  height: 76%;
-  transform: translateX(-50%);
-}
-
-.profile-mystia span {
-  position: absolute;
-  display: block;
-  background: #111018;
-}
-
-.profile-head {
-  left: 34%;
-  top: 18%;
-  width: 32%;
-  aspect-ratio: 1;
-  border-radius: 52% 48% 45% 55%;
-  box-shadow:
-    inset 18px -6px #27304a,
-    0 0 34px rgba(255, 126, 181, .24);
-}
-
-.profile-head::before,
-.profile-head::after {
-  content: "";
-  position: absolute;
-  top: 43%;
-  width: 8px;
-  height: 8px;
-  border-radius: 50%;
-  background: #ff7eb5;
-  box-shadow: 0 0 12px rgba(255, 126, 181, .85);
-}
-
-.profile-head::before { left: 28%; }
-.profile-head::after { right: 28%; }
-
-.profile-wing {
-  top: 22%;
-  width: 42%;
-  height: 66%;
-  border-radius: 90% 10% 80% 18%;
-  opacity: .9;
-}
-
-.profile-wing.left {
-  left: 2%;
-  transform: rotate(-22deg);
-}
-
-.profile-wing.right {
-  right: 2%;
-  transform: rotate(22deg) scaleX(-1);
-}
-
 .profile-copy {
   margin-right: clamp(20px, 8vw, 120px);
   z-index: 8;
@@ -3445,216 +3106,7 @@ body.fixed-story .scene.is-active {
   background: rgba(255, 180, 96, .08);
 }
 
-@keyframes sunMotes {
-  from {
-    background-position: 0 0, 40px 10px, 80px 30px, 120px 20px;
-  }
-  to {
-    background-position: 180px -120px, 260px -160px, 300px -180px, 220px -140px;
-  }
-}
-
-@keyframes lurePulse {
-  50% {
-    opacity: calc(.28 + var(--scene-progress) * .34);
-    filter: blur(1px);
-  }
-}
-
-@keyframes fogSlide {
-  from {
-    transform: translate3d(-2%, 0, 0) scale(1);
-  }
-  to {
-    transform: translate3d(3%, -2%, 0) scale(1.04);
-  }
-}
-
-@keyframes silencePress {
-  50% {
-    transform: scale(1.03);
-    filter: brightness(.82);
-  }
-}
-
-@keyframes lanternWarmth {
-  50% {
-    opacity: calc(.55 + var(--scene-progress) * .32);
-    filter: saturate(1.14);
-  }
-}
-
-@keyframes soupSteam {
-  0% {
-    transform: translate3d(-8px, 20px, 0) scale(.82);
-    opacity: .08;
-  }
-  45% {
-    opacity: .42;
-  }
-  100% {
-    transform: translate3d(18px, -80px, 0) scale(1.18);
-    opacity: 0;
-  }
-}
-
-@keyframes bonkPop {
-  0% {
-    transform: rotate(-10deg) scale(.7);
-  }
-  18% {
-    transform: rotate(-7deg) scale(1.08);
-  }
-  32% {
-    transform: rotate(-9deg) scale(.96);
-  }
-  100% {
-    transform: rotate(-8deg) scale(.98);
-  }
-}
-
-@keyframes bonkFloat {
-  50% {
-    transform: translateY(-6px) rotate(.4deg);
-    filter: saturate(1.08) contrast(1.04) brightness(1.04);
-  }
-}
-
-@keyframes drift {
-  from { transform: translate3d(-2%, 0, 0); }
-  to { transform: translate3d(2%, -2%, 0); }
-}
-
-@keyframes float {
-  50% { transform: translateY(-26px) rotate(8deg); }
-}
-
-@keyframes sparrowWing {
-  50% {
-    translate: 0 -9px;
-    scale: 1 .74;
-  }
-}
-
-@keyframes pulse {
-  50% { opacity: .35; }
-}
-
-@keyframes breathPulse {
-  50% {
-    opacity: .05;
-    transform: scale(1.04);
-  }
-}
-
-@keyframes panicCardShake {
-  0% {
-    translate: -15px 8px;
-    rotate: -1.8deg;
-    filter: drop-shadow(0 0 24px rgba(255, 126, 181, .24)) blur(.15px);
-  }
-  12% {
-    translate: 14px -9px;
-    rotate: 1.5deg;
-  }
-  25% {
-    translate: -12px -7px;
-    rotate: -1.2deg;
-  }
-  37% {
-    translate: 16px 7px;
-    rotate: 1.9deg;
-  }
-  50% {
-    translate: -14px 10px;
-    rotate: -1.6deg;
-    filter: drop-shadow(0 0 34px rgba(255, 126, 181, .34)) blur(.5px);
-  }
-  62% {
-    translate: 11px 8px;
-    rotate: 1.1deg;
-  }
-  75% {
-    translate: 15px -7px;
-    rotate: 1.7deg;
-  }
-  87% {
-    translate: -13px -8px;
-    rotate: -1.4deg;
-  }
-  100% {
-    translate: -15px 8px;
-    rotate: -1.8deg;
-  }
-}
-
-@keyframes panicBorderShake {
-  0% {
-    translate: 7px -5px;
-    opacity: .72;
-  }
-  50% {
-    translate: -8px 6px;
-    opacity: .36;
-  }
-  100% {
-    translate: 7px -5px;
-    opacity: .72;
-  }
-}
-
-@keyframes hauntedHeadlineWave {
-  0% {
-    transform: translate3d(-1px, .5px, 0) skewX(-.8deg) scaleX(1.004) scaleY(.994);
-    filter: blur(.02px) contrast(1.03);
-  }
-  16% {
-    transform: translate3d(.5px, -1px, 0) skewX(.8deg) scaleX(.998) scaleY(1.012);
-    filter: blur(.08px) contrast(1.05);
-  }
-  33% {
-    transform: translate3d(-1.5px, 1.5px, 0) skewX(-1.4deg) scaleX(1.012) scaleY(.974);
-    filter: blur(.24px) contrast(1.1);
-  }
-  50% {
-    transform: translate3d(1px, 1px, 0) skewX(1.1deg) scaleX(.992) scaleY(1.025);
-    filter: blur(.16px) contrast(1.07);
-  }
-  66% {
-    transform: translate3d(-.5px, -1.5px, 0) skewX(-1deg) scaleX(1.014) scaleY(.982);
-    filter: blur(.2px) contrast(1.09);
-  }
-  83% {
-    transform: translate3d(1.5px, -.5px, 0) skewX(.7deg) scaleX(.998) scaleY(1.012);
-    filter: blur(.08px) contrast(1.05);
-  }
-  100% {
-    transform: translate3d(-1px, .5px, 0) skewX(-.8deg) scaleX(1.004) scaleY(.994);
-    filter: blur(.02px) contrast(1.03);
-  }
-}
-
-@keyframes panicLetters {
-  0% {
-    translate: -2px 0;
-    filter: blur(.2px);
-  }
-  50% {
-    translate: 2px 1px;
-    filter: blur(.55px);
-  }
-  100% {
-    translate: -1px -1px;
-    filter: blur(.1px);
-  }
-}
-
-@keyframes steam {
-  50% {
-    transform: translateY(-24px) translateX(16px);
-    opacity: .28;
-  }
-}
+/* Responsive */
 
 @media (max-width: 760px) {
   .progress {
@@ -3730,18 +3182,6 @@ body.fixed-story .scene.is-active {
     width: 94vw;
     height: 260px;
     bottom: 14%;
-  }
-
-  .mystia-night-art {
-    width: min(92vw, 520px);
-    height: 74vh;
-    bottom: -8%;
-  }
-
-  .silhouette {
-    bottom: 18%;
-    width: min(82vw, 420px);
-    height: 48vh;
   }
 
   .scare-mystia-art {
@@ -3887,6 +3327,8 @@ body.fixed-story .scene.is-active {
   }
 }
 
+/* Reduced Motion */
+
 @media (prefers-reduced-motion: reduce) {
   html {
     scroll-behavior: auto;
@@ -3937,3 +3379,147 @@ body.fixed-story .scene.is-active {
   }
 }
 
+/* Restore haunted card motion */
+
+.panic-copy,
+.whisper,
+.devour-copy,
+.taunt-copy {
+  transform-origin: 50% 50%;
+  will-change: translate, rotate, filter;
+  animation: panicCardShake 30s ease-in-out infinite !important;
+}
+
+.panic-copy::before,
+.whisper::before,
+.devour-copy::before,
+.taunt-copy::before {
+  animation: panicBorderShake 9s ease-in-out infinite !important;
+}
+
+.panic-copy h2,
+.whisper h2,
+.devour-copy h2,
+.taunt-copy h2 {
+  display: inline-block;
+  transform-origin: 50% 50%;
+  animation: hauntedHeadlineWave 5.8s ease-in-out infinite !important;
+}
+
+.laugh-cards > span,
+.taunt-cards > span {
+  transform-origin: 50% 50%;
+  will-change: translate, rotate, filter;
+  animation: panicCardShake 18s ease-in-out infinite !important;
+}
+
+.laugh-cards > span::after,
+.taunt-cards > span::after {
+  animation: panicBorderShake 9s ease-in-out infinite !important;
+}
+
+.laugh-cards > span:nth-child(1),
+.taunt-cards > span:nth-child(1) {
+  animation-delay: -.04s;
+}
+
+.laugh-cards > span:nth-child(2),
+.taunt-cards > span:nth-child(2) {
+  animation-delay: -.11s;
+}
+
+.laugh-cards > span:nth-child(3),
+.taunt-cards > span:nth-child(3) {
+  animation-delay: -.16s;
+}
+
+.laugh-cards > span:nth-child(4) {
+  animation-delay: -.21s;
+}
+
+@keyframes panicCardShake {
+  0% {
+    translate: -15px 8px;
+    rotate: -1.8deg;
+    filter: drop-shadow(0 0 24px rgba(255, 126, 181, .24)) blur(.15px);
+  }
+  12% {
+    translate: 14px -9px;
+    rotate: 1.5deg;
+  }
+  25% {
+    translate: -12px -7px;
+    rotate: -1.2deg;
+  }
+  37% {
+    translate: 16px 7px;
+    rotate: 1.9deg;
+  }
+  50% {
+    translate: -14px 10px;
+    rotate: -1.6deg;
+    filter: drop-shadow(0 0 34px rgba(255, 126, 181, .34)) blur(.5px);
+  }
+  62% {
+    translate: 11px 8px;
+    rotate: 1.1deg;
+  }
+  75% {
+    translate: 15px -7px;
+    rotate: 1.7deg;
+  }
+  87% {
+    translate: -13px -8px;
+    rotate: -1.4deg;
+  }
+  100% {
+    translate: -15px 8px;
+    rotate: -1.8deg;
+  }
+}
+
+@keyframes panicBorderShake {
+  0% {
+    translate: 7px -5px;
+    opacity: .72;
+  }
+  50% {
+    translate: -8px 6px;
+    opacity: .36;
+  }
+  100% {
+    translate: 7px -5px;
+    opacity: .72;
+  }
+}
+
+@keyframes hauntedHeadlineWave {
+  0% {
+    transform: translate3d(-1px, .5px, 0) skewX(-.8deg) scaleX(1.004) scaleY(.994);
+    filter: blur(.02px) contrast(1.03);
+  }
+  16% {
+    transform: translate3d(.5px, -1px, 0) skewX(.8deg) scaleX(.998) scaleY(1.012);
+    filter: blur(.08px) contrast(1.05);
+  }
+  33% {
+    transform: translate3d(-1.5px, 1.5px, 0) skewX(-1.4deg) scaleX(1.012) scaleY(.974);
+    filter: blur(.24px) contrast(1.1);
+  }
+  50% {
+    transform: translate3d(1px, 1px, 0) skewX(1.1deg) scaleX(.992) scaleY(1.025);
+    filter: blur(.16px) contrast(1.07);
+  }
+  66% {
+    transform: translate3d(-.5px, -1.5px, 0) skewX(-1deg) scaleX(1.014) scaleY(.982);
+    filter: blur(.2px) contrast(1.09);
+  }
+  83% {
+    transform: translate3d(1.5px, -.5px, 0) skewX(.7deg) scaleX(.998) scaleY(1.012);
+    filter: blur(.08px) contrast(1.05);
+  }
+  100% {
+    transform: translate3d(-1px, .5px, 0) skewX(-.8deg) scaleX(1.004) scaleY(.994);
+    filter: blur(.02px) contrast(1.03);
+  }
+}
