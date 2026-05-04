@@ -114,6 +114,12 @@ body.autoplay-lock .scroll-cue {
   word-break: keep-all;
 }
 
+.warning-pink {
+  color: #b12b5c;
+  font-weight: 700;
+  text-shadow: 0 0 16px rgba(177, 43, 92, .28);
+}
+
 .warning-actions {
   display: flex;
   margin-top: 26px;
