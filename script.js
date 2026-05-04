@@ -107,11 +107,13 @@ function setLoadingProgress(progress) {
 function showLoadingGate() {
   if (!loadingGate) return;
   loadingGate.classList.add("is-active");
+  document.body.classList.add("loading-lock");
 }
 
 function hideLoadingGate() {
   if (!loadingGate) return;
   loadingGate.classList.remove("is-active");
+  document.body.classList.remove("loading-lock");
 }
 
 function getAutoplayEase(progress) {
@@ -385,6 +387,7 @@ function prepareAutoplayStart() {
 
   if (autoplayPreparing) return;
   autoplayPreparing = true;
+  setControlledScrollTarget(0, true);
   showLoadingGate();
 
   Promise.all([
@@ -400,7 +403,10 @@ function prepareAutoplayStart() {
 }
 
 function blockAutoplayInput(event) {
-  if (!document.body.classList.contains("autoplay-lock")) return;
+  if (
+    !document.body.classList.contains("autoplay-lock") &&
+    !document.body.classList.contains("loading-lock")
+  ) return;
   event.preventDefault();
 }
 
@@ -453,7 +459,9 @@ function getMaxScrollTop() {
 }
 
 function isScrollControlPaused() {
-  return isContentWarningVisible() || document.body.classList.contains("autoplay-lock");
+  return isContentWarningVisible() ||
+    document.body.classList.contains("loading-lock") ||
+    document.body.classList.contains("autoplay-lock");
 }
 
 function syncControlledTarget() {

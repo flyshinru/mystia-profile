@@ -50,10 +50,16 @@ body.warning-open {
   overflow: hidden;
 }
 
+body.loading-lock {
+  overflow: hidden;
+}
+
 body.autoplay-lock {
   overflow: hidden;
 }
 
+body.loading-lock .site-header,
+body.loading-lock .scroll-cue,
 body.autoplay-lock .site-header,
 body.autoplay-lock .scroll-cue {
   pointer-events: none;
