@@ -20,7 +20,6 @@ const autoplayStorageKey = "mistia-initial-autoplay-complete";
 const autoplayStorage = sessionStorage;
 const minimumLoadingGateDuration = 2000;
 const loadingRealProgressLimit = 0.9;
-const loadingAutoplayLeadDuration = minimumLoadingGateDuration;
 const preloadAssets = [
   "assets/bamboo-forest-world.png",
   "assets/mistia-night-sparrow.png",
@@ -34,9 +33,12 @@ const textRevealDelays = new Map([
   ["day", 0.03],
   ["cart", 1.32]
 ]);
-const textRevealWindows = new Map([
-  ["day", 0.72]
+const textRevealWindows = new Map();
+const decorativeTextRevealWindows = new Map([
+  ["taunt", 0.26],
+  ["devour", 0.26]
 ]);
+const decorativeCardRevealDelay = 0.11;
 const typedKickerScenes = new Set(["day", "cart", "profile"]);
 const fadeWidth = 0.44;
 const sceneIndexByName = new Map(scenes.map((scene, index) => [scene.dataset.scene, index]));
@@ -54,20 +56,18 @@ const headlineTextSpeed = 0.5;
 const textReadHoldDuration = 0.2;
 const longTextReadHoldDuration = 0.5;
 const headlineTextSpeeds = new Map([
-  ["day", 1.12],
-  ["breath", 1]
+  ["breath", 2]
 ]);
-const kickerTextSpeeds = new Map([
-  ["day", 1.75]
-]);
+const kickerTextSpeeds = new Map();
 const textReadHoldDurations = new Map([
   ["panic", longTextReadHoldDuration],
   ["night", longTextReadHoldDuration],
   ["taunt", longTextReadHoldDuration],
-  ["devour", longTextReadHoldDuration],
-  ["breath", 0.7]
+  ["devour", longTextReadHoldDuration]
 ]);
 const sceneDurationOverrides = new Map([
+  ["day", 1.42],
+  ["breath", 0.72],
   ["profile", 1.13]
 ]);
 const sceneBaseDurations = scenes.map((scene) => {
@@ -237,8 +237,21 @@ function prepareTextReveal() {
 
       textNodes.forEach((node) => {
         const fragment = document.createDocumentFragment();
+        let word = document.createElement("span");
+        word.className = "reveal-word";
+
+        function appendWord() {
+          if (!word.hasChildNodes()) return;
+          fragment.appendChild(word);
+          word = document.createElement("span");
+          word.className = "reveal-word";
+        }
 
         [...node.textContent].forEach((char) => {
+          if (/\s/.test(char)) {
+            appendWord();
+          }
+
           const span = document.createElement("span");
           span.className = /\s/.test(char) ? "reveal-char reveal-space" : "reveal-char";
           if (isHeadline) {
@@ -249,9 +262,14 @@ function prepareTextReveal() {
           }
           span.textContent = /\s/.test(char) ? " " : char;
           chars.push({ span, isHeadline });
-          fragment.appendChild(span);
+          if (/\s/.test(char)) {
+            fragment.appendChild(span);
+          } else {
+            word.appendChild(span);
+          }
         });
 
+        appendWord();
         node.replaceWith(fragment);
       });
     });
@@ -306,8 +324,11 @@ function prepareTextReveal() {
       }
 
       block.appendChild(inner);
-      revealDecorations.push({ block, sceneIndex });
+      const siblings = [...block.parentElement.children].filter((child) => child.tagName === block.tagName);
+      const cardIndex = Math.max(0, siblings.indexOf(block));
+      revealDecorations.push({ block, sceneIndex, cardIndex });
       block.style.setProperty("--text-reveal", "0");
+      block.style.setProperty("--card-reveal", "0");
     }
   });
 }
@@ -330,13 +351,17 @@ function updateTextReveal(storyProgress) {
     copy.style.setProperty("--kicker-reveal", kickerReveal.toFixed(4));
   });
 
-  revealDecorations.forEach(({ block, sceneIndex }) => {
+  revealDecorations.forEach(({ block, sceneIndex, cardIndex }) => {
     const duration = sceneBaseDurations[sceneIndex];
     const start = scenePositions[sceneIndex];
-    const revealWindow = Math.max(0.6, Math.min(1.1, duration * 0.48));
-    const reveal = clamp((storyProgress - start + 0.04) / revealWindow);
+    const sceneName = scenes[sceneIndex]?.dataset.scene;
+    const revealWindow = decorativeTextRevealWindows.get(sceneName) ?? Math.max(0.6, Math.min(1.1, duration * 0.48));
+    const cardDelay = cardIndex * decorativeCardRevealDelay;
+    const reveal = clamp((storyProgress - start + 0.04 - cardDelay) / revealWindow);
+    const cardReveal = clamp((storyProgress - start + 0.12 - cardDelay) / 0.18);
 
     block.style.setProperty("--text-reveal", reveal.toFixed(4));
+    block.style.setProperty("--card-reveal", cardReveal.toFixed(4));
   });
 }
 
@@ -366,12 +391,10 @@ function prepareAutoplayStart() {
     preloadStoryAssets(),
     waitForPageLoad()
   ]).then(() => {
-    finishLoadingProgress((progress) => {
-      renderInitialAutoplayAt(progress * loadingAutoplayLeadDuration);
-    }).then(() => {
+    finishLoadingProgress().then(() => {
       hideLoadingGate();
       autoplayPreparing = false;
-      startInitialAutoplay(loadingAutoplayLeadDuration);
+      startInitialAutoplay();
     });
   });
 }
@@ -550,17 +573,28 @@ function smoothstep(value) {
   return t * t * (3 - 2 * t);
 }
 
-function sceneVisibility(distance) {
-  if (distance <= 0.22) return 1;
-  return smoothstep(1 - (distance - 0.22) / fadeWidth);
+function sceneVisibility(distance, index) {
+  const sceneName = scenes[index]?.dataset.scene;
+  const fullVisibilityDistance = sceneName === "day" ? 0.06 : sceneName === "scare" ? 0.02 : 0.22;
+  const exitFadeWidth = sceneName === "day" ? 0.22 : sceneName === "scare" ? 0.06 : fadeWidth;
+
+  if (distance <= fullVisibilityDistance) return 1;
+  return smoothstep(1 - (distance - fullVisibilityDistance) / exitFadeWidth);
 }
 
 function sceneDistance(storyProgress, index) {
   const start = scenePositions[index];
-  const duration = sceneBaseDurations[index];
+  const sceneName = scenes[index]?.dataset.scene;
+  const duration = sceneName === "day" ? sceneDurations[index] : sceneBaseDurations[index];
   const readHold = getSceneTextReadHoldDuration(index);
-  const enterOffset = scenes[index].dataset.scene === "scare" ? 0.32 : 0;
-  const holdEnd = start + Math.max(0.7, duration * 0.74) + readHold;
+  const enterOffset = sceneName === "scare" ? 0.1 : 0;
+  const holdRatio = sceneName === "day" ? 0.62 : 0.74;
+  const breathAfterTextHold = (maxStoryProgress / (autoplayDuration / 1000)) * 1.45;
+  const breathRevealWindow = Math.max(0.78, Math.min(1.45, duration * 0.68));
+  const breathTextComplete = start - 0.08 + (breathRevealWindow / (headlineTextSpeeds.get("breath") ?? headlineTextSpeed));
+  const holdEnd = sceneName === "breath"
+    ? breathTextComplete + breathAfterTextHold
+    : start + Math.max(0.7, duration * holdRatio) + readHold;
 
   if (storyProgress < start + enterOffset) return start + enterOffset - storyProgress;
   if (index === lastSceneIndex) return 0;
@@ -679,15 +713,29 @@ function update() {
 
   scenes.forEach((scene, index) => {
     const distance = sceneDistance(storyProgress, index);
-    const visibility = sceneVisibility(distance);
-    const local = clamp((storyProgress - scenePositions[index] + 0.5) / sceneDurations[index]);
+    const visibility = sceneVisibility(distance, index);
+    const localLead = scene.dataset.scene === "scare" ? 0 : 0.5;
+    const local = clamp((storyProgress - scenePositions[index] + localLead) / sceneDurations[index]);
     const linear = clamp((storyProgress - scenePositions[index]) / sceneDurations[index]);
     const sparrowLead = index === 0 ? 0 : 0.34;
     const sparrowMotion = clamp((storyProgress - scenePositions[index] + sparrowLead) / sceneDurations[index]);
+    if (scene.dataset.scene === "cart") {
+      const sceneName = scene.dataset.scene;
+      const duration = sceneBaseDurations[index];
+      const textDelay = textRevealDelays.get(sceneName) ?? 0;
+      const revealWindow = textRevealWindows.get(sceneName) ?? Math.max(0.78, Math.min(1.45, duration * 0.68));
+      const bonkStart = scenePositions[index] + textDelay - 0.08 + revealWindow * 0.72;
+      const bonkReveal = smoothstep((storyProgress - bonkStart) / 0.18);
+
+      scene.style.setProperty("--bonk-reveal", bonkReveal.toFixed(4));
+    }
     scene.style.setProperty("--scene-opacity", visibility.toFixed(4));
     scene.style.setProperty("--scene-visibility", visibility.toFixed(4));
     scene.style.setProperty("--scene-progress", local.toFixed(4));
     scene.style.setProperty("--scene-linear", linear.toFixed(4));
+    if (scene.dataset.scene === "scare") {
+      scene.style.setProperty("--scare-copy-reveal", smoothstep((linear - 0.24) / 0.22).toFixed(4));
+    }
     scene.style.setProperty("--sparrow-motion", sparrowMotion.toFixed(4));
     scene.classList.toggle("is-active", visibility > 0.5);
 
